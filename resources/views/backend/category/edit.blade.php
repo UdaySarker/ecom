@@ -31,7 +31,7 @@
         {{-- {{$parent_cats}} --}}
         {{-- {{$category}} --}}
 
-      <div class="form-group {{(($category->is_parent==1) ? 'd-none' : '')}}" id='parent_cat_div'>
+      <div class="form-group {{(($category->is_parent==1) ? 'd-none' : '')}}" id=''>
           <label for="parent_id">Parent Category</label>
           <select name="parent_id" class="form-control">
               <option value="">--Select any category--</option>

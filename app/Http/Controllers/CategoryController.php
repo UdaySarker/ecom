@@ -42,7 +42,7 @@ class CategoryController extends Controller
         return $request->all();
         // $this->validate($request,[
         //     'title'=>'string|required',
-        //     'summary'=>'string|nullable|required',
+        //     'summary'=>'string|required',
         //     'category_img'=>'required|nullable|image|mimes:png,jpg,jpeg|max:2048',
         //     'status'=>'required|in:active,inactive',
         //     'is_parent'=>'sometimes|in:1',
@@ -104,22 +104,22 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // return $request->all();
+         return $request->all();
         $category=Category::findOrFail($id);
         $this->validate($request,[
             'title'=>'string|required',
-            'summary'=>'string|nullable|required',
-            'category_img'=>'required|nullable|image|mimes:png,jpg,jpeg|max:2048',
+            'summary'=>'string|required',
+            'category_img'=>'required|image|mimes:png,jpg,jpeg|max:2048',
             'status'=>'required|in:active,inactive',
             'is_parent'=>'sometimes|in:1',
             'parent_id'=>'nullable|exists:categories,id',
         ]);
-        $data= $request->all();
-        $data['is_parent']=$request->input('is_parent',0);
-        $image_path=$request->file('category_img')->storeAs('/category',$request->file('category_img')->getClientOriginalName());
-       // unset($data['banner_img']);
-        $data['photo']=$image_path;
-        return $data;
+    // //     $data= $request->all();
+    // //     $data['is_parent']=$request->input('is_parent',0);
+    // //     $image_path=$request->file('category_img')->storeAs('/category',$request->file('category_img')->getClientOriginalName());
+    // //    // unset($data['banner_img']);
+    // //     $data['photo']=$image_path;
+    //     return $data;
         // $status=$category->fill($data)->save();
         // if($status){
         //     request()->session()->flash('success','Category successfully updated');
