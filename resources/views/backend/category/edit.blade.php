@@ -5,8 +5,8 @@
 <div class="card">
     <h5 class="card-header">Edit Category</h5>
     <div class="card-body">
-      <form method="post" action="{{route('category.update',$category->id)}}">
-        @csrf 
+      <form method="post" action="{{route('category.update',$category->id)}}" enctype="multipart/form-data">
+        @csrf
         @method('PATCH')
         <div class="form-group">
           <label for="inputTitle" class="col-form-label">Title <span class="text-danger">*</span></label>
@@ -26,7 +26,7 @@
 
         <div class="form-group">
           <label for="is_parent">Is Parent</label><br>
-          <input type="checkbox" name='is_parent' id='is_parent' value='{{$category->is_parent}}' {{(($category->is_parent==1)? 'checked' : '')}}> Yes                        
+          <input type="checkbox" name='is_parent' id='is_parent' value='{{$category->is_parent}}' {{(($category->is_parent==1)? 'checked' : '')}}> Yes
         </div>
         {{-- {{$parent_cats}} --}}
         {{-- {{$category}} --}}
@@ -36,28 +36,23 @@
           <select name="parent_id" class="form-control">
               <option value="">--Select any category--</option>
               @foreach($parent_cats as $key=>$parent_cat)
-              
+
                   <option value='{{$parent_cat->id}}' {{(($parent_cat->id==$category->parent_id) ? 'selected' : '')}}>{{$parent_cat->title}}</option>
               @endforeach
           </select>
         </div>
 
         <div class="form-group">
-          <label for="inputPhoto" class="col-form-label">Photo</label>
-          <div class="input-group">
-              <span class="input-group-btn">
-                  <a id="lfm" data-input="thumbnail" data-preview="holder" class="btn btn-primary">
-                  <i class="fa fa-picture-o"></i> Choose
-                  </a>
-              </span>
-          <input id="thumbnail" class="form-control" type="text" name="photo" value="{{$category->photo}}">
+          <label class="btn btn-primary">
+            <i class="fa fa-image"></i> Upload Book Thumbnail<input type="file" style="display: none;"  name="photo">
+          </label>
         </div>
         <div id="holder" style="margin-top:15px;max-height:100px;"></div>
           @error('photo')
           <span class="text-danger">{{$message}}</span>
           @enderror
         </div>
-        
+
         <div class="form-group">
           <label for="status" class="col-form-label">Status <span class="text-danger">*</span></label>
           <select name="status" class="form-control">
@@ -77,23 +72,7 @@
 
 @endsection
 
-@push('styles')
-<link rel="stylesheet" href="{{asset('backend/summernote/summernote.min.css')}}">
-@endpush
 @push('scripts')
-<script src="/vendor/laravel-filemanager/js/stand-alone-button.js"></script>
-<script src="{{asset('backend/summernote/summernote.min.js')}}"></script>
-<script>
-    $('#lfm').filemanager('image');
-
-    $(document).ready(function() {
-    $('#summary').summernote({
-      placeholder: "Write short description.....",
-        tabsize: 2,
-        height: 150
-    });
-    });
-</script>
 <script>
   $('#is_parent').change(function(){
     var is_checked=$('#is_parent').prop('checked');
