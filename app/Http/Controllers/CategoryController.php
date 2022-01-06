@@ -39,34 +39,34 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        return $request->all();
-        // $this->validate($request,[
-        //     'title'=>'string|required',
-        //     'summary'=>'string|required',
-        //     'category_img'=>'required|nullable|image|mimes:png,jpg,jpeg|max:2048',
-        //     'status'=>'required|in:active,inactive',
-        //     'is_parent'=>'sometimes|in:1',
-        //     'parent_id'=>'nullable|exists:categories,id',
-        // ]);
-        // $data= $request->all();
-        // $slug=Str::slug($request->title);
-        // $count=Category::where('slug',$slug)->count();
-        // if($count>0){
-        //     $slug=$slug.'-'.date('ymdis').'-'.rand(0,999);
-        // }
-        // $data['slug']=$slug;
-        // $data['is_parent']=$request->input('is_parent',0);
-        // $image_path=$request->file('category_img')->storeAs('/category',$request->file('category_img')->getClientOriginalName());
-        // $data['photo']=$image_path;
+       // return $request->all();
+        $this->validate($request,[
+            'title'=>'string|required',
+            'summary'=>'string|required',
+            'category_img'=>'required|nullable|image|mimes:png,jpg,jpeg|max:2048',
+            'status'=>'required|in:active,inactive',
+            'is_parent'=>'sometimes|in:1',
+            'parent_id'=>'nullable|exists:categories,id',
+        ]);
+        $data= $request->all();
+        $slug=Str::slug($request->title);
+        $count=Category::where('slug',$slug)->count();
+        if($count>0){
+            $slug=$slug.'-'.date('ymdis').'-'.rand(0,999);
+        }
+        $data['slug']=$slug;
+        $data['is_parent']=$request->input('is_parent',0);
+        $image_path=$request->file('category_img')->storeAs('/category',$request->file('category_img')->getClientOriginalName());
+        $data['photo']=$image_path;
         //return $data;
-        // $status=Category::create($data);
-        // if($status){
-        //     request()->session()->flash('success','Category successfully added');
-        // }
-        // else{
-        //     request()->session()->flash('error','Error occurred, Please try again!');
-        // }
-        // return redirect()->route('category.index');
+        $status=Category::create($data);
+        if($status){
+            request()->session()->flash('success','Category successfully added');
+        }
+        else{
+            request()->session()->flash('error','Error occurred, Please try again!');
+        }
+        return redirect()->route('category.index');
 
 
     }
@@ -104,30 +104,38 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-         return $request->all();
+        //return $request->all();
         $category=Category::findOrFail($id);
         $this->validate($request,[
             'title'=>'string|required',
             'summary'=>'string|required',
-            'category_img'=>'required|image|mimes:png,jpg,jpeg|max:2048',
+            'category_img'=>'image|mimes:png,jpg,jpeg|max:2048',
             'status'=>'required|in:active,inactive',
-            'is_parent'=>'sometimes|in:1',
-            'parent_id'=>'nullable|exists:categories,id',
+            'is_parent'=>'sometimes|in:1,0',
+            'parent_id'=>'sometimes|exists:categories,id',
         ]);
-    // //     $data= $request->all();
-    // //     $data['is_parent']=$request->input('is_parent',0);
-    // //     $image_path=$request->file('category_img')->storeAs('/category',$request->file('category_img')->getClientOriginalName());
-    // //    // unset($data['banner_img']);
-    // //     $data['photo']=$image_path;
-    //     return $data;
-        // $status=$category->fill($data)->save();
-        // if($status){
-        //     request()->session()->flash('success','Category successfully updated');
-        // }
-        // else{
-        //     request()->session()->flash('error','Error occurred, Please try again!');
-        // }
-        // return redirect()->route('category.index');
+        $data= $request->all();
+        if($data['is_parent']== "1"){
+            $data['parent_id']=NULL;
+        }
+       // $data['is_parent']=$request->input('is_parent',0);
+        // $data['parent_id']=$request->input('parent_id',0);
+        if(empty($request->file('category_img')))
+        {
+            $data['photo']='';
+        }else{
+        $image_path=$request->file('category_img')->storeAs('/category',$request->file('category_img')->getClientOriginalName());
+        $data['photo']=$image_path;
+        };
+        //return $data;
+        $status=$category->fill($data)->save();
+        if($status){
+            request()->session()->flash('success','Category successfully updated');
+        }
+        else{
+            request()->session()->flash('error','Error occurred, Please try again!');
+        }
+        return redirect()->route('category.index');
     }
 
     /**
