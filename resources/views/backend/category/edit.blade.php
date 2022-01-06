@@ -29,7 +29,7 @@
           @if($category->is_parent==1)
             <h5 id="parent_enabled" class="badge badge-success">Yes</h5>
           @else
-            <h5 class="badge badge-primary">Not Parent</h5>
+            <h5 class="badge badge-primary">Not A Parent</h5>
           @endif
 
         </div>
@@ -44,10 +44,12 @@
           <select name="parent_id" class="form-control">
               <option value="">--Select any category--</option>
               @foreach($parent_cats as $key=>$parent_cat)
-
                   <option value='{{$parent_cat->id}}' {{(($parent_cat->id==$category->parent_id) ? 'selected' : '')}}>{{$parent_cat->title}}</option>
               @endforeach
           </select>
+          @error('parent_id')
+          <span class="text-danger">{{$message}}</span>
+          @enderror
         </div>`
         <div class="form-group">
           <label class="btn btn-primary">

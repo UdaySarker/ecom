@@ -111,7 +111,7 @@ class CategoryController extends Controller
             'summary'=>'string|required',
             'category_img'=>'image|mimes:png,jpg,jpeg|max:2048',
             'status'=>'required|in:active,inactive',
-            'is_parent'=>'sometimes|in:1,0',
+            'is_parent'=>'nullable|sometimes|in:1,0',
             'parent_id'=>'sometimes|exists:categories,id',
         ]);
         $data= $request->all();
@@ -127,15 +127,15 @@ class CategoryController extends Controller
         $image_path=$request->file('category_img')->storeAs('/category',$request->file('category_img')->getClientOriginalName());
         $data['photo']=$image_path;
         };
-        //return $data;
-        $status=$category->fill($data)->save();
-        if($status){
-            request()->session()->flash('success','Category successfully updated');
-        }
-        else{
-            request()->session()->flash('error','Error occurred, Please try again!');
-        }
-        return redirect()->route('category.index');
+        return $data;
+        // $status=$category->fill($data)->save();
+        // if($status){
+        //     request()->session()->flash('success','Category successfully updated');
+        // }
+        // else{
+        //     request()->session()->flash('error','Error occurred, Please try again!');
+        // }
+        // return redirect()->route('category.index');
     }
 
     /**
