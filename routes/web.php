@@ -105,7 +105,7 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
     // Banner
     Route::resource('banner','BannerController');
     // Brand
-    Route::resource('brand','BrandController');
+    Route::resource('publisher','PublisherController');
     // Profile
     Route::get('/profile','AdminController@profile')->name('admin-profile');
     Route::post('/profile/{id}','AdminController@profileUpdate')->name('profile-update');
