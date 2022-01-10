@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Publisher;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\Author;
+use Illuminate\Support\Str;
 
-class PublisherController extends Controller
+class AuthorController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +15,8 @@ class PublisherController extends Controller
      */
     public function index()
     {
-        $publishers=Publisher::orderBy('id','DESC')->paginate();
-        return view('backend.publisher.index')->with('publishers',$publishers);
+        $authors=Author::orderBy('id','DESC')->paginate();
+        return view('backend.author.index')->with('authors',$authors);
     }
 
     /**
@@ -26,7 +26,7 @@ class PublisherController extends Controller
      */
     public function create()
     {
-        return view('backend.publisher.create');
+        return view('backend.author.create');
     }
 
     /**
@@ -38,24 +38,24 @@ class PublisherController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'title'=>'string|required',
+            'name'=>'string|required',
         ]);
         $data=$request->all();
-        $slug=Str::slug($request->title);
-        $count=Publisher::where('slug',$slug)->count();
+        $slug=Str::slug($request->name);
+        $count=Author::where('slug',$slug)->count();
         if($count>0){
             $slug=$slug.'-'.date('ymdis').'-'.rand(0,999);
         }
         $data['slug']=$slug;
         //return $data;
-        $status=Publisher::create($data);
+        $status=Author::create($data);
         if($status){
-            request()->session()->flash('success','Publisher successfully created');
+            request()->session()->flash('success','Author successfully created');
         }
         else{
             request()->session()->flash('error','Error, Please try again');
         }
-        return redirect()->route('publisher.index');
+        return redirect()->route('author.index');
     }
 
     /**
@@ -77,11 +77,11 @@ class PublisherController extends Controller
      */
     public function edit($id)
     {
-        $publisher=Publisher::find($id);
-        if(!$publisher){
-            request()->session()->flash('error','Publisher not found');
+        $author=Author::find($id);
+        if(!$author){
+            request()->session()->flash('error','Author not found');
         }
-        return view('backend.publisher.edit')->with('publisher',$publisher);
+        return view('backend.author.edit')->with('author',$author);
     }
 
     /**
@@ -93,20 +93,20 @@ class PublisherController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $publisher=Publisher::find($id);
+        $author=Author::find($id);
         $this->validate($request,[
-            'title'=>'string|required',
+            'name'=>'string|required',
         ]);
         $data=$request->all();
 
-        $status=$publisher->fill($data)->save();
+        $status=$author->fill($data)->save();
         if($status){
-            request()->session()->flash('success','publisher successfully updated');
+            request()->session()->flash('success','Author successfully updated');
         }
         else{
             request()->session()->flash('error','Error, Please try again');
         }
-        return redirect()->route('publisher.index');
+        return redirect()->route('author.index');
     }
 
     /**
@@ -117,19 +117,19 @@ class PublisherController extends Controller
      */
     public function destroy($id)
     {
-        $publisher=Publisher::find($id);
-        if($publisher){
-            $status=$publisher->delete();
+        $author=Author::find($id);
+        if($author){
+            $status=$author->delete();
             if($status){
-                request()->session()->flash('success','Publisher successfully deleted');
+                request()->session()->flash('success','Author successfully deleted');
             }
             else{
                 request()->session()->flash('error','Error, Please try again');
             }
-            return redirect()->route('publisher.index');
+            return redirect()->route('author.index');
         }
         else{
-            request()->session()->flash('error','Publisher not found');
+            request()->session()->flash('error','Author not found');
             return redirect()->back();
         }
     }

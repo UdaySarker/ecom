@@ -27,12 +27,14 @@ class CreateProductsTable extends Migration
             $table->float('price');
             $table->float('discount')->nullabale();
             $table->boolean('is_featured')->deault(false);
-            $table->unsignedBigInteger('publisher_id')->nullable()->index();
-            $table->unsignedBigInteger('cat_id')->nullable()->index();
-            $table->unsignedBigInteger('child_cat_id')->nullable()->index();
+            $table->unsignedBigInteger('publisher_id')->nullable();
+            $table->unsignedBigInteger('cat_id')->nullable();
+            $table->unsignedBigInteger('child_cat_id')->nullable();
+            $table->unsignedBigInteger('author_id')->nullable();
             $table->foreign('publisher_id')->references('id')->on('publishers')->onDelete('SET NULL');
             $table->foreign('cat_id')->references('id')->on('categories')->onDelete('SET NULL');
             $table->foreign('child_cat_id')->references('id')->on('categories')->onDelete('SET NULL');
+            $table->foreign('author_id')->references('id')->on('authors')->onDelete('SET NULL');
             $table->timestamps();
         });
     }

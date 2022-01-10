@@ -9,17 +9,17 @@
          </div>
      </div>
     <div class="card-header py-3">
-      <h6 class="m-0 font-weight-bold text-primary float-left">Publisher List</h6>
-      <a href="{{route('publisher.create')}}" class="btn btn-primary btn-sm float-right" data-toggle="tooltip" data-placement="bottom" title="Add User"><i class="fas fa-plus"></i> Add Publisher</a>
+      <h6 class="m-0 font-weight-bold text-primary float-left">Author List</h6>
+      <a href="{{route('author.create')}}" class="btn btn-primary btn-sm float-right" data-toggle="tooltip" data-placement="bottom" title="Add User"><i class="fas fa-plus"></i> Add Author</a>
     </div>
     <div class="card-body">
       <div class="table-responsive">
-        @if(count($publishers)>0)
+        @if(count($authors)>0)
         <table class="table table-bordered" id="banner-dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>
               <th>S.N.</th>
-              <th>Title</th>
+              <th>Name</th>
               <th>Slug</th>
               <th>Status</th>
               <th>Action</th>
@@ -28,31 +28,31 @@
           <tfoot>
             <tr>
               <th>S.N.</th>
-              <th>Title</th>
+              <th>Name</th>
               <th>Slug</th>
               <th>Status</th>
               <th>Action</th>
               </tr>
           </tfoot>
           <tbody>
-            @foreach($publishers as $publisher)
+            @foreach($authors as $author)
                 <tr>
-                    <td>{{$publisher->id}}</td>
-                    <td>{{$publisher->title}}</td>
-                    <td>{{$publisher->slug}}</td>
+                    <td>{{$author->id}}</td>
+                    <td>{{$author->name}}</td>
+                    <td>{{$author->slug}}</td>
                     <td>
-                        @if($publisher->status=='active')
-                            <span class="badge badge-success">{{$publisher->status}}</span>
+                        @if($author->status=='active')
+                            <span class="badge badge-success">{{$author->status}}</span>
                         @else
-                            <span class="badge badge-warning">{{$publisher->status}}</span>
+                            <span class="badge badge-warning">{{$author->status}}</span>
                         @endif
                     </td>
                     <td>
-                        <a href="{{route('publisher.edit',$publisher->id)}}" class="btn btn-primary btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="edit" data-placement="bottom"><i class="fas fa-edit"></i></a>
-                        <form method="POST" action="{{route('publisher.destroy',[$publisher->id])}}">
+                        <a href="{{route('author.edit',$author->id)}}" class="btn btn-primary btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="edit" data-placement="bottom"><i class="fas fa-edit"></i></a>
+                        <form method="POST" action="{{route('author.destroy',[$author->id])}}">
                           @csrf
                           @method('delete')
-                              <button class="btn btn-danger btn-sm dltBtn" data-id={{$publisher->id}} style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>
+                              <button class="btn btn-danger btn-sm dltBtn" data-id={{$author->id}} style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>
                         </form>
                     </td>
                     {{-- Delete Modal --}}
@@ -81,7 +81,7 @@
         </table>
         {{-- <span style="float:right">{{$publisher->links()}}</span> --}}
         @else
-          <h6 class="text-center">No publishers found!!! Please create publisher</h6>
+          <h6 class="text-center">No Author found!!! Please create Author</h6>
         @endif
       </div>
     </div>

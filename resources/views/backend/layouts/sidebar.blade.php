@@ -83,7 +83,7 @@
         </div>
     </li>
 
-    {{-- Brands --}}
+    {{-- Publisher --}}
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#brandCollapse" aria-expanded="true" aria-controls="brandCollapse">
           <i class="fas fa-table"></i>
@@ -94,6 +94,21 @@
             <h6 class="collapse-header">Publisher Options:</h6>
             <a class="collapse-item" href="{{route('publisher.index')}}">Publisher</a>
             <a class="collapse-item" href="{{route('publisher.create')}}">Add Publisher</a>
+          </div>
+        </div>
+    </li>
+
+    {{-- Author --}}
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#authorCollapse" aria-expanded="true" aria-controls="authorCollapse">
+          <i class="fa fa-user-circle"></i>
+          <span>Authors</span>
+        </a>
+        <div id="authorCollapse" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Author Options:</h6>
+            <a class="collapse-item" href="{{route('author.index')}}">Authors</a>
+            <a class="collapse-item" href="{{route('author.create')}}">Add Author</a>
           </div>
         </div>
     </li>
