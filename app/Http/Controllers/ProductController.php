@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Category;
-use App\Models\Brand;
-
+use App\Models\Author;
+use App\Models\Publisher;
 use Illuminate\Support\Str;
 
 class ProductController extends Controller
@@ -30,10 +30,14 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $brand=Brand::get();
+        $publisher=Publisher::get();
+        $author=Author::get();
         $category=Category::where('is_parent',1)->get();
         // return $category;
-        return view('backend.product.create')->with('categories',$category)->with('brands',$brand);
+        return view('backend.product.create')
+            ->with('categories',$category)
+            ->with('publishers',$publisher)
+            ->with('authors',$author);
     }
 
     /**
@@ -44,21 +48,22 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        // return $request->all();
+        //return $request->all();
         $this->validate($request,[
-            'title'=>'string|required|min:4',
-            'summary'=>'string|required',
-            'description'=>'string|nullable',
-            'photo'=>'string|required',
-            'size'=>'nullable',
+            'title'=>'required|string|min:4',
+            'summary'=>'required|string',
+            'description'=>'required|string|nullable',
+            'product_img'=>'image|mimes:png,jpg,jpeg',
+            'pages'=>'nullable|numeric',
             'stock'=>"required|numeric",
-            'cat_id'=>'required|exists:categories,id',
-            'brand_id'=>'nullable|exists:brands,id',
+            'cat_id'=>'exists:categories,id',
+            'publisher_id'=>'nullable|exists:publishers,id',
+            'author_id'=>'nullable|exists:authors,id',
             'child_cat_id'=>'nullable|exists:categories,id',
             'is_featured'=>'sometimes|in:1',
-            'status'=>'required|in:active,inactive',
-            'condition'=>'required|in:default,new,hot',
-            'price'=>'required|numeric',
+            'status'=>'in:active,inactive',
+            'condition'=>'in:default,new,hot,best-seller,trending',
+            'price'=>'numeric|required',
             'discount'=>'nullable|numeric'
         ]);
 
@@ -70,15 +75,13 @@ class ProductController extends Controller
         }
         $data['slug']=$slug;
         $data['is_featured']=$request->input('is_featured',0);
-        $size=$request->input('size');
-        if($size){
-            $data['size']=implode(',',$size);
-        }
-        else{
-            $data['size']='';
-        }
+        $pages=$request->input('pages');
+        $data['pages']=$pages;
+        $image_path=$request->file('product_img')->storeAs('products_image',$request->file('product_img')->getClientOriginalName());
+        $data['photo']=$image_path;
+        unset($data['product_img']);
         // return $size;
-        // return $data;
+        //return $data;
         $status=Product::create($data);
         if($status){
             request()->session()->flash('success','Product Successfully added');
@@ -87,7 +90,6 @@ class ProductController extends Controller
             request()->session()->flash('error','Please try again!!');
         }
         return redirect()->route('product.index');
-
     }
 
     /**
@@ -109,13 +111,13 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        $brand=Brand::get();
+        $author=Author::get();
         $product=Product::findOrFail($id);
         $category=Category::where('is_parent',1)->get();
         $items=Product::where('id',$id)->get();
         // return $items;
         return view('backend.product.edit')->with('product',$product)
-                    ->with('brands',$brand)
+                    ->with('authors',$author)
                     ->with('categories',$category)->with('items',$items);
     }
 
