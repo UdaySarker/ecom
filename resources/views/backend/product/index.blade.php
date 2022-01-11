@@ -59,7 +59,6 @@
               $authors=DB::table('authors')->select('name')->where('id',$product->author_id)->get();
               @endphp
                 <tr>
-                    {{dd($product)}}
                     <td>{{$product->id}}</td>
                     <td>{{$product->title}}</td>
                     <td>{{$product->cat_info['title']}}
@@ -90,7 +89,7 @@
                               $photo=explode(',',$product->photo);
                               // dd($photo);
                             @endphp
-                            <img src="{{$photo[0]}}" class="img-fluid zoom" style="max-width:80px" alt="{{$product->photo}}">
+                            <img src="{{asset('storage/'.$product->photo)}}" class="img-fluid zoom" style="max-width:80px" alt="{{$product->photo}}">
                         @else
                             <img src="{{asset('backend/img/thumbnail-default.jpg')}}" class="img-fluid" style="max-width:80px" alt="avatar.png">
                         @endif
@@ -103,12 +102,13 @@
                         @endif
                     </td>
                     <td>
+                        <a href="{{route('product.show',$product->id)}}" class="btn btn-info btn-sm" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="show"><i class="fas fa-eye"></i></a>
                         <a href="{{route('product.edit',$product->id)}}" class="btn btn-primary btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="edit" data-placement="bottom"><i class="fas fa-edit"></i></a>
-                    <form method="POST" action="{{route('product.destroy',[$product->id])}}">
-                      @csrf
-                      @method('delete')
-                          <button class="btn btn-danger btn-sm dltBtn" data-id={{$product->id}} style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>
-                        </form>
+                            <form method="POST" action="{{route('product.destroy',[$product->id])}}">
+                                @csrf
+                                @method('delete')
+                                <button class="btn btn-danger btn-sm dltBtn" data-id={{$product->id}} style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>
+                            </form>
                     </td>
                     {{-- Delete Modal --}}
                     {{-- <div class="modal fade" id="delModal{{$user->id}}" tabindex="-1" role="dialog" aria-labelledby="#delModal{{$user->id}}Label" aria-hidden="true">

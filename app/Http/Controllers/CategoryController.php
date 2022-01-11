@@ -112,9 +112,10 @@ class CategoryController extends Controller
             'category_img'=>'image|mimes:png,jpg,jpeg|max:2048',
             'status'=>'required|in:active,inactive',
             'is_parent'=>'nullable|sometimes|in:1,0',
-            'parent_id'=>'sometimes|exists:categories,id',
+            'parent_id'=>'nullable|sometimes|exists:categories,id',
         ]);
         $data= $request->all();
+        return $data;
         if($request->has('is_parent')){
             $data['is_parent']=$request->input('is_parent');
         }else{
@@ -133,7 +134,8 @@ class CategoryController extends Controller
         $image_path=$request->file('category_img')->storeAs('/category',$request->file('category_img')->getClientOriginalName());
         $data['photo']=$image_path;
         };
-        //return $data;
+        return $data;
+        exit(0);
         $status=$category->fill($data)->save();
         if($status){
             request()->session()->flash('success','Category successfully updated');

@@ -50,7 +50,7 @@ class ProductController extends Controller
     {
         //return $request->all();
         $this->validate($request,[
-            'title'=>'required|string|min:4',
+            'title'=>'required|string|min:4|unique:products,title',
             'summary'=>'required|string',
             'description'=>'required|string|nullable',
             'product_img'=>'image|mimes:png,jpg,jpeg',
@@ -68,6 +68,7 @@ class ProductController extends Controller
         ]);
 
         $data=$request->all();
+        //return $data;
         $slug=Str::slug($request->title);
         $count=Product::where('slug',$slug)->count();
         if($count>0){
@@ -80,8 +81,6 @@ class ProductController extends Controller
         $image_path=$request->file('product_img')->storeAs('products_image',$request->file('product_img')->getClientOriginalName());
         $data['photo']=$image_path;
         unset($data['product_img']);
-        // return $size;
-        //return $data;
         $status=Product::create($data);
         if($status){
             request()->session()->flash('success','Product Successfully added');
@@ -112,13 +111,16 @@ class ProductController extends Controller
     public function edit($id)
     {
         $author=Author::get();
+        $publishers=Publisher::get();
         $product=Product::findOrFail($id);
         $category=Category::where('is_parent',1)->get();
         $items=Product::where('id',$id)->get();
         // return $items;
         return view('backend.product.edit')->with('product',$product)
                     ->with('authors',$author)
-                    ->with('categories',$category)->with('items',$items);
+                    ->with('categories',$category)
+                    ->with('items',$items)
+                    ->with('publishers',$publishers);
     }
 
     /**
@@ -132,32 +134,34 @@ class ProductController extends Controller
     {
         $product=Product::findOrFail($id);
         $this->validate($request,[
-            'title'=>'string|required',
-            'summary'=>'string|required',
-            'description'=>'string|nullable',
-            'photo'=>'string|required',
-            'size'=>'nullable',
+            'title'=>'required|string|min:4',
+            'summary'=>'required|string',
+            'description'=>'required|string|nullable',
+            'product_img'=>'image|mimes:png,jpg,jpeg',
+            'pages'=>'nullable|numeric',
             'stock'=>"required|numeric",
-            'cat_id'=>'required|exists:categories,id',
+            'cat_id'=>'exists:categories,id',
+            'publisher_id'=>'nullable|exists:publishers,id',
+            'author_id'=>'nullable|exists:authors,id',
             'child_cat_id'=>'nullable|exists:categories,id',
             'is_featured'=>'sometimes|in:1',
-            'brand_id'=>'nullable|exists:brands,id',
-            'status'=>'required|in:active,inactive',
-            'condition'=>'required|in:default,new,hot',
-            'price'=>'required|numeric',
+            'status'=>'in:active,inactive',
+            'condition'=>'in:default,new,hot,best-seller,trending',
+            'price'=>'numeric|required',
             'discount'=>'nullable|numeric'
         ]);
 
-        $data=$request->all();
         $data['is_featured']=$request->input('is_featured',0);
-        $size=$request->input('size');
-        if($size){
-            $data['size']=implode(',',$size);
+        $pages=$request->input('pages');
+        $data['pages']=$pages;
+        if(empty($request->file('product_img'))){
+            $data['photo']='';
+        }else{
+            $image_path=$request->file('product_img')->storeAs('products_image',$request->file('product_img')->getClientOriginalName());
+            $data['photo']=$image_path;
         }
-        else{
-            $data['size']='';
-        }
-        // return $data;
+
+        unset($data['product_img']);
         $status=$product->fill($data)->save();
         if($status){
             request()->session()->flash('success','Product Successfully updated');
