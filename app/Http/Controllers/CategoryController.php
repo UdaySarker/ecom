@@ -115,7 +115,7 @@ class CategoryController extends Controller
             'parent_id'=>'nullable|sometimes|exists:categories,id',
         ]);
         $data= $request->all();
-        return $data;
+        //return $data;
         if($request->has('is_parent')){
             $data['is_parent']=$request->input('is_parent');
         }else{
@@ -131,11 +131,9 @@ class CategoryController extends Controller
         {
             $data['photo']='';
         }else{
-        $image_path=$request->file('category_img')->storeAs('/category',$request->file('category_img')->getClientOriginalName());
-        $data['photo']=$image_path;
+            $image_path=$request->file('category_img')->storeAs('/category',$request->file('category_img')->getClientOriginalName());
+            $data['photo']=$image_path;
         };
-        return $data;
-        exit(0);
         $status=$category->fill($data)->save();
         if($status){
             request()->session()->flash('success','Category successfully updated');

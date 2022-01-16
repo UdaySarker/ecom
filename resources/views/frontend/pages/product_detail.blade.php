@@ -46,8 +46,8 @@
 											<!-- Images slider -->
 											<div class="flexslider-thumbnails">
 												<ul class="slides">
-													<li data-thumb="{{asset('storage/'.$product->photo)}}" rel="adjustX:10, adjustY:">
-														<img src="{{asset('storage/'.$product->photo)}}" alt="{{$data}}">
+													<li data-thumb="{{asset('storage/'.$product_detail->photo)}}" rel="adjustX:10, adjustY:">
+														<img src="{{asset('storage/'.$product_detail->photo)}}" alt="">
 													</li>
 												</ul>
 											</div>
