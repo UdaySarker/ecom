@@ -52,11 +52,11 @@
           @enderror
         </div>`
         <div class="form-group">
-          <label class="btn btn-primary">
-            <i class="fa fa-image"></i> Upload Book Thumbnail
-            <input type="file" style="display: none;"  name="category_img">
-          </label>
-          {{-- <input type="file" name="category_img" class="form-control"> --}}
+          <label>Photo<span class="text-danger">*</span></label>
+          <div class="custom-file">
+              <label for="" class="custom-file-label">Choose File</label>
+            <input type="file" class="custom-file-input" name="category_img">
+          </div>
         </div>
         <div id="holder" style="margin-top:15px;max-height:100px;">
           @error('category_img')

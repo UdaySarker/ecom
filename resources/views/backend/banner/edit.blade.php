@@ -24,8 +24,11 @@
         </div>
 
         <div class="form-group">
-        <label for="inputPhoto" class="col-form-label">Photo <span class="text-danger">*</span></label>
-          <input id="" class="form-control" type="file" name="banner_img">
+            <label for="inputPhoto" class="col-form-label">Photo <span class="text-danger">*</span></label>
+            <div class="custom-file">
+                <label for="" class="custom-file-label">Choose File</label>
+                <input id="" class="custom-file-input" type="file" name="banner_img">
+            </div>
         <div id="holder" style="margin-top:15px;max-height:100px;"></div>
           @error('photo')
           <span class="text-danger">{{$message}}</span>
