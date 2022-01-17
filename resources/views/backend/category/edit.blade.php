@@ -51,17 +51,26 @@
           <span class="text-danger">{{$message}}</span>
           @enderror
         </div>`
-        <div class="form-group">
-          <label>Photo<span class="text-danger">*</span></label>
-          <div class="custom-file">
-              <label for="" class="custom-file-label">Choose File</label>
-            <input type="file" class="custom-file-input" name="category_img">
-          </div>
-        </div>
-        <div id="holder" style="margin-top:15px;max-height:100px;">
-          @error('category_img')
-          <span class="text-danger">{{$message}}</span>
-          @enderror
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label>Photo<span class="text-danger">*</span></label>
+                    <div class="custom-file">
+                        <label for="" class="custom-file-label">Choose File</label>
+                      <input type="file" class="custom-file-input" name="category_img" onchange="loadFile(event)">
+                    </div>
+                  </div>
+                  <div id="holder" style="margin-top:15px;max-height:100px;">
+                    @error('category_img')
+                    <span class="text-danger">{{$message}}</span>
+                    @enderror
+                </div>
+            </div>
+            <div class="col">
+
+                <img id="output" alt="" src="{{asset('storage/'.$category->photo)}}" class="img-thumbnail" style="width: 200px;height:200px">
+                <h4 id="outputText"></h4>
+              </div>
         </div>
         <div class="form-group">
           <label for="status" class="col-form-label">Status <span class="text-danger">*</span></label>
@@ -120,4 +129,17 @@
     //     }
     //   })
 </script>
+<script>
+    var loadFile = function(event) {
+      var output = document.getElementById('output');
+      var outputText=document.getElementById('outputText');
+      output.style.width='200px';
+      output.style.height='200px';
+      output.src = URL.createObjectURL(event.target.files[0]);
+      outputText.textContent=event.target.files[0].name;
+      output.onload = function() {
+        URL.revokeObjectURL(output.src) // free memory
+      }
+    };
+  </script>
 @endpush

@@ -43,7 +43,7 @@
                         @enderror
                     </div>
                     <div class="form-group">
-                        <h4 id="ouputText"></h4>
+                        <h4 id="outputText"></h4>
                         <img id="output" class="rounded mx-auto d-block"alt="">
                     </div>
                 </div>
@@ -228,7 +228,7 @@
       output.style.width='200px';
       output.style.height='200px';
       output.src = URL.createObjectURL(event.target.files[0]);
-      ouputText.textContent=event.target.files[0].name;
+      outputText.textContent=event.target.files[0].name;
       output.onload = function() {
         URL.revokeObjectURL(output.src) // free memory
       }
