@@ -1,5 +1,5 @@
 @extends('backend.layouts.master')
-
+@section('title','BoiBazar|| Update Product')
 @section('main-content')
 
 <div class="card">
@@ -32,18 +32,27 @@
                     <span class="text-danger">{{$message}}</span>
                     @enderror
                 </div>
-                <div class="form-group">
-                    <label for="inputPhoto" class="col-form-label">Photo <span class="text-danger">*</span></label>
-                    <div class="custom-file">
-                        <label for="" class="custom-file-label">Choose File</label>
-                        <input type="file" name="product_img" class="custom-file-input" id="inputPhoto">
-                    </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="inputPhoto" class="col-form-label">Photo <span class="text-danger">*</span></label>
+                            <div class="custom-file">
+                                <label for="" class="custom-file-label">Choose File</label>
+                                <input type="file" name="product_img" class="custom-file-input" id="inputPhoto" onchange="loadFile(event)">
+                            </div>
 
-                    <div id="holder" style="margin-top:15px;max-height:100px;"></div>
-                        @error('photo')
-                            <span class="text-danger">{{$message}}</span>
-                        @enderror
+                            <div id="holder" style="margin-top:15px;max-height:100px;"></div>
+                                @error('photo')
+                                    <span class="text-danger">{{$message}}</span>
+                                @enderror
+                        </div>
                     </div>
+                    <div class="col">
+                        <h4 id="outputText"></h4>
+                        <img id="output" alt="" src="{{asset('storage/'.$product->photo)}}" class="img-thumbnail">
+                    </div>
+                </div>
+
                 </div>
             {{-- end of first column --}}
 
@@ -218,4 +227,17 @@
     }
   })
 </script>
+<script>
+    var loadFile = function(event) {
+      var output = document.getElementById('output');
+      var outputText=document.getElementById('outputText');
+      output.style.width='200px';
+      output.style.height='200px';
+      output.src = URL.createObjectURL(event.target.files[0]);
+      ouputText.textContent=event.target.files[0].name;
+      output.onload = function() {
+        URL.revokeObjectURL(output.src) // free memory
+      }
+    };
+  </script>
 @endpush

@@ -1,5 +1,5 @@
 @extends('backend.layouts.master')
-
+@section('title','BoiBazar|| Update Category')
 @section('main-content')
 
 <div class="card">

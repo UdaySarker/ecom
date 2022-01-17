@@ -14,5 +14,5 @@
 
     <!-- Custom styles for this template-->
     @stack('styles')
-
+    <title>@yield('title')</title>
 </head>

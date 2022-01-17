@@ -1,5 +1,5 @@
 @extends('backend.layouts.master')
-
+@section('title','BoiBazar|| Create Product')
 @section('main-content')
 
 <div class="card">
@@ -34,13 +34,17 @@
                 <div class="form-group">
                     <label for="inputPhoto" class="col-form-label">Photo <span class="text-danger">*</span></label>
                     <div class="custom-file">
-                        <input type="file" name="product_img" class="custom-file-input" id="inputPhoto">
+                        <input type="file" name="product_img" class="custom-file-input" id="inputPhoto" onchange="loadFile(event)">
                         <label for="" class="custom-file-label">Choose File</label>
                     </div>
                     <div id="holder" style="margin-top:15px;max-height:100px;"></div>
                         @error('photo')
                             <span class="text-danger">{{$message}}</span>
                         @enderror
+                    </div>
+                    <div class="form-group">
+                        <h4 id="ouputText"></h4>
+                        <img id="output" class="rounded mx-auto d-block"alt="">
                     </div>
                 </div>
             {{-- end of first column --}}
@@ -216,4 +220,18 @@
     }
   })
 </script>
+<script>
+    var loadFile = function(event) {
+        console.log(event.target.files)
+      var output = document.getElementById('output');
+      var outputText=document.getElementById('outputText');
+      output.style.width='200px';
+      output.style.height='200px';
+      output.src = URL.createObjectURL(event.target.files[0]);
+      ouputText.textContent=event.target.files[0].name;
+      output.onload = function() {
+        URL.revokeObjectURL(output.src) // free memory
+      }
+    };
+  </script>
 @endpush
