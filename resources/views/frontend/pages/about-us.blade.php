@@ -1,6 +1,6 @@
 @extends('frontend.layouts.master')
 
-@section('title','E-SHOP || About Us')
+@section('title','BoiBazar || About Us')
 
 @section('main-content')
 
@@ -20,7 +20,7 @@
 		</div>
 	</div>
 	<!-- End Breadcrumbs -->
-	
+
 	<!-- About Us -->
 	<section class="about-us section">
 			<div class="container">
@@ -30,7 +30,7 @@
 							@php
 								$settings=DB::table('settings')->get();
 							@endphp
-							<h3>Welcome To <span>Eshop</span></h3>
+							<h3>Welcome To <span>BoiBazar</span></h3>
 							<p>@foreach($settings as $data) {{$data->description}} @endforeach</p>
 							<div class="button">
 								<a href="{{route('blog')}}" class="btn">Our Blog</a>
@@ -43,14 +43,14 @@
 							{{-- <div class="button">
 								<a href="https://www.youtube.com/watch?v=nh2aYrGMrIE" class="video video-popup mfp-iframe"><i class="fa fa-play"></i></a>
 							</div> --}}
-							<img src="@foreach($settings as $data) {{$data->photo}} @endforeach" alt="@foreach($settings as $data) {{$data->photo}} @endforeach">
+							<img src="@foreach($settings as $data) {{asset('storage/'.$data->photo)}} @endforeach" alt="@foreach($settings as $data) {{$data->photo}} @endforeach">
 						</div>
 					</div>
 				</div>
 			</div>
 	</section>
 	<!-- End About Us -->
-	
+
 	<!-- Start Team -->
 	{{-- <section id="team" class="team section">
 		<div class="container">
@@ -90,7 +90,7 @@
 							<!-- End Social -->
 						</div>
 					</div>
-				</div>	
+				</div>
 				<!-- End Single Team -->
 				<div class="col-lg-3 col-md-6 col-12">
 					<div class="single-team">
@@ -118,7 +118,7 @@
 							<!-- End Social -->
 						</div>
 					</div>
-				</div>	
+				</div>
 				<!-- End Single Team -->
 				<div class="col-lg-3 col-md-6 col-12">
 					<div class="single-team">
@@ -146,7 +146,7 @@
 							<!-- End Social -->
 						</div>
 					</div>
-				</div>	
+				</div>
 				<!-- End Single Team -->
 				<div class="col-lg-3 col-md-6 col-12">
 					<div class="single-team">
@@ -174,13 +174,13 @@
 							<!-- End Social -->
 						</div>
 					</div>
-				</div>	
+				</div>
 				<!-- End Single Team -->
-			</div>	
+			</div>
 		</div>
 	</section> --}}
 	<!--/ End Team Area -->
-	
+
 	<!-- Start Shop Services Area -->
 	<section class="shop-services section">
 		<div class="container">
@@ -225,6 +225,6 @@
 		</div>
 	</section>
 	<!-- End Shop Services Area -->
-	
+
 	@include('frontend.layouts.newsletter')
 @endsection

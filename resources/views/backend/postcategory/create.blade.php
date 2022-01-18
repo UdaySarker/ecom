@@ -1,5 +1,5 @@
 @extends('backend.layouts.master')
-
+@section('title','BoiBazar || Post Category Create')
 @section('main-content')
 
 <div class="card">
