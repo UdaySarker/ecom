@@ -38,19 +38,18 @@ class UsersController extends Controller
     {
         $this->validate($request,
         [
-            'name'=>'string|required|max:30',
+            'name'=>'string|required|max:30|min:4',
             'email'=>'string|required|unique:users',
-            'password'=>'string|required',
+            'password'=>'required|min:6|alpha_num',
             'role'=>'required|in:admin,user',
             'status'=>'required|in:active,inactive',
-            'photo'=>'nullable|string',
+            'profile_photo'=>'nullable|image|mimes:jpg,png,jpeg',
         ]);
         // dd($request->all());
         $data=$request->all();
         $data['password']=Hash::make($request->password);
-        // dd($data);
+        //dd($data);
         $status=User::create($data);
-        // dd($status);
         if($status){
             request()->session()->flash('success','Successfully added user');
         }
@@ -96,16 +95,24 @@ class UsersController extends Controller
         $user=User::findOrFail($id);
         $this->validate($request,
         [
-            'name'=>'string|required|max:30',
+            'name'=>'string|required|max:30|min:4',
             'email'=>'string|required',
+            'password'=>'required|min:6|alpha_num',
             'role'=>'required|in:admin,user',
             'status'=>'required|in:active,inactive',
-            'photo'=>'nullable|string',
+            'profile_photo' =>'nullable|image|mimes:jpg,png,jpeg',
         ]);
         // dd($request->all());
         $data=$request->all();
         // dd($data);
-        
+        if(empty($request->file('profile_photo')))
+        {
+            $data['photo']=$user->photo;
+        }else{
+            $image_path=$request->file('profile_photo')->storeAs('users_image',$request->file('profile_photo')->getClientOriginalName());
+            $data['photo']=$image_path;
+            unset($data['profile_photo']);
+        }
         $status=$user->fill($data)->save();
         if($status){
             request()->session()->flash('success','Successfully updated');
