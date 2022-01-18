@@ -37,6 +37,15 @@ class AdminController extends Controller
         // return $request->all();
         $user=User::findOrFail($id);
         $data=$request->all();
+        if(empty($request->file('profile_photo')))
+        {
+            $data['photo']=$user->photo;
+        }else{
+            $image_path=$request->file('profile_photo')->storeAs('users_image',$request->file('profile_photo')->getClientOriginalName());
+            $data['photo']=$image_path;
+            unset($data['profile_photo']);
+        }
+        //return $data;
         $status=$user->fill($data)->save();
         if($status){
             request()->session()->flash('success','Successfully updated your profile');
@@ -57,16 +66,34 @@ class AdminController extends Controller
         $this->validate($request,[
             'short_des'=>'required|string',
             'description'=>'required|string',
-            'photo'=>'required',
-            'logo'=>'required',
+            'photo'=>'required|image|mimes:png,jpg,jpeg',
+            'logo'=>'required|image|mimes:png,jpg,jpeg',
             'address'=>'required|string',
             'email'=>'required|email',
             'phone'=>'required|string',
         ]);
         $data=$request->all();
-        // return $data;
         $settings=Settings::first();
-        // return $settings;
+        if(empty($request->file('logo')))
+        {
+            $data['logo']=$settings->logo;
+
+        }else{
+            $logo_path=$request->file('logo')->storeAs('setting_logo',$request->file('logo')->getClientOriginalName());
+
+            $data['logo']=$logo_path;
+
+        }
+        if(empty($request->file('photo'))){
+            $data['photo']=$settings->photo;
+        }else
+        {
+            $photo_path=$request->file('photo')->storeAs('setting_photos',$request->file('photo')->getClientOriginalName());
+            $data['photo']=$photo_path;
+        }
+        //return $data;
+
+        //return $settings;
         $status=$settings->fill($data)->save();
         if($status){
             request()->session()->flash('success','Setting successfully updated');

@@ -38,8 +38,8 @@ class BannerController extends Controller
     {
          //return $request->all();
         $this->validate($request,[
-            'title'=>'string|required|max:50',
-            'description'=>'string|nullable',
+            'title'=>'required|string|max:50|min:5',
+            'description'=>'required|string',
             'banner_img'=>'required|image|mimes:png,jpg,jpeg|max:2048',
             'status'=>'required|in:active,inactive',
         ]);

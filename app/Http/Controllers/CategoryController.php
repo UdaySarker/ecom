@@ -129,11 +129,12 @@ class CategoryController extends Controller
         // $data['parent_id']=$request->input('parent_id',0);
         if(empty($request->file('category_img')))
         {
-            $data['photo']='';
+            $data['photo']=$category->photo;
         }else{
             $image_path=$request->file('category_img')->storeAs('/category',$request->file('category_img')->getClientOriginalName());
             $data['photo']=$image_path;
         };
+        //return $data;
         $status=$category->fill($data)->save();
         if($status){
             request()->session()->flash('success','Category successfully updated');

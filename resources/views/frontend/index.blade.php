@@ -73,7 +73,7 @@
                     @if($cat->is_parent==1)
                         <!-- Single Banner  -->
                         <div class="col-lg-4 col-md-6 col-12">
-                            <div class="single-banner">
+                            <div class="single-banner" style="width:377px;height:300px">
                                 @if($cat->photo)
                                     <img src="{{asset('storage/'.$cat->photo)}}" alt="{{$cat->photo}}">
                                 @else
@@ -231,6 +231,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="owl-carousel popular-slider">
+                    @if(count($product_lists)<0)
                     @foreach($product_lists as $product)
                         @if($product->condition=='hot')
                             <!-- Start Single Product -->
@@ -264,8 +265,13 @@
                         </div>
                         <!-- End Single Product -->
                         @endif
+
                     @endforeach
+                    @else
+                    <h3 class="text-center">No Product Found In This Criteria</h3>
+                    @endif
                 </div>
+
             </div>
         </div>
     </div>
@@ -370,7 +376,7 @@
                     <div class="col-lg-4 col-md-6 col-12">
                         <!-- Start Single Blog  -->
                         <div class="shop-single-blog">
-                            <img src="{{$post->photo}}" alt="{{$post->photo}}">
+                            <img src="{{asset('storage/'.$post->photo)}}" alt="{{$post->photo}}">
                             <div class="content">
                                 <p class="date">{{$post->created_at->format('d M , Y. D')}}</p>
                                 <a href="{{route('blog.detail',$post->slug)}}" class="title">{{$post->title}}</a>
