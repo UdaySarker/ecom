@@ -1,5 +1,5 @@
 @extends('backend.layouts.master')
-
+@section('title','Create a Post')
 @section('main-content')
 
 <div class="card">
@@ -71,7 +71,7 @@
             <label for="">Upload Photo</label>
             <div class="custom-file">
                 <label class="custom-file-label" for="customFile">Choose file</label>
-                <input type="file" class="custom-file-input" id="customFile">
+                <input type="file" name="photo" class="custom-file-input" id="customFile">
 
               </div>
         </div>

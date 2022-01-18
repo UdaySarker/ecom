@@ -50,7 +50,7 @@ class PostController extends Controller
             'quote'=>'string|nullable',
             'summary'=>'string|required',
             'description'=>'string|nullable',
-            'photo'=>'string|nullable',
+            'photo'=>'image|mimes:jpg,png,jpeg|nullable',
             'tags'=>'nullable',
             'added_by'=>'nullable',
             'post_cat_id'=>'required',
@@ -74,7 +74,10 @@ class PostController extends Controller
             $data['tags']='';
         }
         // return $data;
-
+        $image_path=$request->file('photo')->storeAs('post_images',$request->file('photo')->getClientOriginalName());
+        $data['photo']=$image_path;
+        unset($data['profile_photo']);
+        //return $data;
         $status=Post::create($data);
         if($status){
             request()->session()->flash('success','Post Successfully added');
@@ -127,7 +130,7 @@ class PostController extends Controller
             'quote'=>'string|nullable',
             'summary'=>'string|required',
             'description'=>'string|nullable',
-            'photo'=>'string|nullable',
+            'photo'=>'image|mimes:jpg,png,jpeg|nullable',
             'tags'=>'nullable',
             'added_by'=>'nullable',
             'post_cat_id'=>'required',
@@ -143,6 +146,14 @@ class PostController extends Controller
         else{
             $data['tags']='';
         }
+        if(empty($request->file('product_img'))){
+            $data['photo']=$post->photo;
+        }else{
+            $image_path=$request->file('product_img')->storeAs('products_image',$request->file('product_img')->getClientOriginalName());
+            $data['photo']=$image_path;
+        }
+
+        unset($data['product_img']);
         // return $data;
 
         $status=$post->fill($data)->save();
@@ -164,9 +175,9 @@ class PostController extends Controller
     public function destroy($id)
     {
         $post=Post::findOrFail($id);
-       
+
         $status=$post->delete();
-        
+
         if($status){
             request()->session()->flash('success','Post successfully deleted');
         }
