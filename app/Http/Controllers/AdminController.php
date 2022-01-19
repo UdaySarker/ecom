@@ -46,14 +46,16 @@ class AdminController extends Controller
             unset($data['profile_photo']);
         }
         //return $data;
-        $status=$user->fill($data)->save();
-        if($status){
-            request()->session()->flash('success','Successfully updated your profile');
-        }
-        else{
-            request()->session()->flash('error','Please try again!');
-        }
-        return redirect()->back();
+        $data['password']=Hash::make($request->password);
+        return $data;
+        // $status=$user->fill($data)->save();
+        // if($status){
+        //     request()->session()->flash('success','Successfully updated your profile');
+        // }
+        // else{
+        //     request()->session()->flash('error','Please try again!');
+        // }
+        // return redirect()->back();
     }
 
     public function settings(){

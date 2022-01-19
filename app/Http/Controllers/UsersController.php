@@ -113,6 +113,7 @@ class UsersController extends Controller
             $data['photo']=$image_path;
             unset($data['profile_photo']);
         }
+        $data['password']=Hash::make($request->password);
         $status=$user->fill($data)->save();
         if($status){
             request()->session()->flash('success','Successfully updated');
