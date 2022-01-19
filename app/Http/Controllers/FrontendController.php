@@ -228,7 +228,7 @@ class FrontendController extends Controller
         // return $request->slug;
         $recent_products=Product::where('status','active')->orderBy('id','DESC')->limit(3)->get();
 
-        if(request()->is('e-shop.loc/product-grids')){
+        if(request()->is('boibazar.loc/product-grids')){
             return view('frontend.pages.product-grids')->with('products',$products->products)->with('recent_products',$recent_products);
         }
         else{
@@ -241,7 +241,7 @@ class FrontendController extends Controller
         // return $products;
         $recent_products=Product::where('status','active')->orderBy('id','DESC')->limit(3)->get();
 
-        if(request()->is('e-shop.loc/product-grids')){
+        if(request()->is('boibazar.loc/product-grids')){
             return view('frontend.pages.product-grids')->with('products',$products->sub_products)->with('recent_products',$recent_products);
         }
         else{

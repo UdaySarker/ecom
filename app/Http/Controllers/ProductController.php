@@ -150,18 +150,19 @@ class ProductController extends Controller
             'price'=>'numeric|required',
             'discount'=>'nullable|numeric'
         ]);
-
+        $data=$request->all();
         $data['is_featured']=$request->input('is_featured',0);
         $pages=$request->input('pages');
         $data['pages']=$pages;
         if(empty($request->file('product_img'))){
-            $data['photo']='';
+            $data['photo']=$product->photo;
         }else{
             $image_path=$request->file('product_img')->storeAs('products_image',$request->file('product_img')->getClientOriginalName());
             $data['photo']=$image_path;
         }
 
         unset($data['product_img']);
+        //return $data;
         $status=$product->fill($data)->save();
         if($status){
             request()->session()->flash('success','Product Successfully updated');

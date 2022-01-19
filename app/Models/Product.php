@@ -24,7 +24,8 @@ class Product extends Model
         return $this->hasMany('App\Models\ProductReview','product_id','id')->with('user_info')->where('status','active')->orderBy('id','DESC');
     }
     public static function getProductBySlug($slug){
-        return Product::with(['cat_info','rel_prods','getReview'])->where('slug',$slug)->first();
+       // return Product::with(['cat_info','rel_prods','getReview'])->where('slug',$slug)->first();
+       return Product::where('slug',$slug)->first();
     }
     public static function countActiveProduct(){
         $data=Product::where('status','active')->count();
