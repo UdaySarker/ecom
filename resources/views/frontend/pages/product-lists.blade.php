@@ -187,11 +187,8 @@
 													<div class="single-product">
 														<div class="product-img">
 															<a href="{{route('product-detail',$product->slug)}}">
-															@php
-																$photo=explode(',',$product->photo);
-															@endphp
-															<img class="default-img" src="{{$photo[0]}}" alt="{{$photo[0]}}">
-															<img class="hover-img" src="{{$photo[0]}}" alt="{{$photo[0]}}">
+															<img class="default-img" src="{{asset('storage/'.$product->photo)}}" alt="{{$photo[0]}}">
+															<img class="hover-img" src="{{asset('storage/'.$product->photo)}}" alt="{{$photo[0]}}">
 															</a>
 															<div class="button-head">
 																<div class="product-action">
