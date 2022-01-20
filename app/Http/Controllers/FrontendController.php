@@ -8,7 +8,6 @@ use App\Models\PostTag;
 use App\Models\PostCategory;
 use App\Models\Post;
 use App\Models\Cart;
-use App\Models\Brand;
 use App\User;
 use DB;
 use Illuminate\Support\Str;
@@ -66,12 +65,12 @@ class FrontendController extends Controller
             $products->whereIn('cat_id',$cat_ids);
             // return $products;
         }
-        if(!empty($_GET['brand'])){
-            $slugs=explode(',',$_GET['brand']);
-            $brand_ids=Brand::select('id')->whereIn('slug',$slugs)->pluck('id')->toArray();
-            return $brand_ids;
-            $products->whereIn('brand_id',$brand_ids);
-        }
+        // if(!empty($_GET['brand'])){
+        //     $slugs=explode(',',$_GET['brand']);
+        //     $brand_ids=Brand::select('id')->whereIn('slug',$slugs)->pluck('id')->toArray();
+        //     return $brand_ids;
+        //     $products->whereIn('brand_id',$brand_ids);
+        // }
         if(!empty($_GET['sortBy'])){
             if($_GET['sortBy']=='title'){
                 $products=$products->where('status','active')->orderBy('title','ASC');
@@ -114,12 +113,12 @@ class FrontendController extends Controller
             $products->whereIn('cat_id',$cat_ids)->paginate;
             // return $products;
         }
-        if(!empty($_GET['brand'])){
-            $slugs=explode(',',$_GET['brand']);
-            $brand_ids=Brand::select('id')->whereIn('slug',$slugs)->pluck('id')->toArray();
-            return $brand_ids;
-            $products->whereIn('brand_id',$brand_ids);
-        }
+        // if(!empty($_GET['brand'])){
+        //     $slugs=explode(',',$_GET['brand']);
+        //     $brand_ids=Brand::select('id')->whereIn('slug',$slugs)->pluck('id')->toArray();
+        //     return $brand_ids;
+        //     $products->whereIn('brand_id',$brand_ids);
+        // }
         if(!empty($_GET['sortBy'])){
             if($_GET['sortBy']=='title'){
                 $products=$products->where('status','active')->orderBy('title','ASC');
@@ -212,17 +211,17 @@ class FrontendController extends Controller
         return view('frontend.pages.product-grids')->with('products',$products)->with('recent_products',$recent_products);
     }
 
-    public function productBrand(Request $request){
-        $products=Brand::getProductByBrand($request->slug);
-        $recent_products=Product::where('status','active')->orderBy('id','DESC')->limit(3)->get();
-        if(request()->is('e-shop.loc/product-grids')){
-            return view('frontend.pages.product-grids')->with('products',$products->products)->with('recent_products',$recent_products);
-        }
-        else{
-            return view('frontend.pages.product-lists')->with('products',$products->products)->with('recent_products',$recent_products);
-        }
+    // public function productBrand(Request $request){
+    //     $products=Brand::getProductByBrand($request->slug);
+    //     $recent_products=Product::where('status','active')->orderBy('id','DESC')->limit(3)->get();
+    //     if(request()->is('e-shop.loc/product-grids')){
+    //         return view('frontend.pages.product-grids')->with('products',$products->products)->with('recent_products',$recent_products);
+    //     }
+    //     else{
+    //         return view('frontend.pages.product-lists')->with('products',$products->products)->with('recent_products',$recent_products);
+    //     }
 
-    }
+    // }
     public function productCat(Request $request){
         $products=Category::getProductByCat($request->slug);
         // return $request->slug;

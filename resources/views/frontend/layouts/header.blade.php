@@ -42,7 +42,7 @@
         </div>
     </div>
     <!-- End Topbar -->
-    <div class="middle-inner">
+    <div class="middle-inner" style="padding:0">
         <div class="container">
             <div class="row">
                 <div class="col-lg-2 col-md-2 col-12">

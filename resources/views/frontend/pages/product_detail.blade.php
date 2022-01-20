@@ -316,11 +316,8 @@
                                 <div class="single-product">
                                     <div class="product-img">
 										<a href="{{route('product-detail',$data->slug)}}">
-											@php
-												$photo=explode(',',$data->photo);
-											@endphp
-                                            <img class="default-img" src="{{asset('storage/'.$product->photo)}}" alt="{{''}}">
-                                            <img class="hover-img" src="{{asset('storage/'.$product->photo)}}" alt="{{''}}">
+                                            <img class="default-img" src="{{asset('storage/'.$data->photo)}}" alt="{{''}}">
+                                            <img class="hover-img" src="{{asset('storage/'.$data->photo)}}" alt="{{''}}">
                                             <span class="price-dec">{{$data->discount}} % Off</span>
                                                                     {{-- <span class="out-of-stock">Hot</span> --}}
                                         </a>
@@ -390,27 +387,40 @@
                     </div>
                     <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
                         <div class="quickview-content">
-                            <h2>Flared Shift Dress</h2>
+                            <h2>{{$product_detail->title}}</h2>
                             <div class="quickview-ratting-review">
                                 <div class="quickview-ratting-wrap">
                                     <div class="quickview-ratting">
-                                        <i class="yellow fa fa-star"></i>
-                                        <i class="yellow fa fa-star"></i>
-                                        <i class="yellow fa fa-star"></i>
-                                        <i class="yellow fa fa-star"></i>
+                                        @php
+                                        $rate=DB::table('product_reviews')->where('product_id',$product_detail->id)->avg('rate');
+                                        $rate_count=DB::table('product_reviews')->where('product_id',$product_detail->id)->count();
+                                    @endphp
+                                    @for($i=1; $i<=5; $i++)
+                                        @if($rate>=$i)
+                                            <i class="yellow fa fa-star"></i>
+                                        @else
                                         <i class="fa fa-star"></i>
+                                        @endif
+                                    @endfor
                                     </div>
-                                    <a href="#"> (1 customer review)</a>
+                                    <a href="#"> ({{$rate_count}} customer review)</a>
                                 </div>
                                 <div class="quickview-stock">
-                                    <span><i class="fa fa-check-circle-o"></i> in stock</span>
+                                    @if($product_detail->stock >0)
+                                    <span><i class="fa fa-check-circle-o"></i> {{$product_detail->stock}} in stock</span>
+                                    @else
+                                    <span><i class="fa fa-times-circle-o text-danger"></i> {{$product_detail->stock}} out stock</span>
+                                    @endif
                                 </div>
                             </div>
-                            <h3>$29.00</h3>
+                            @php
+                            $after_discount=($product_detail->price-($product_detail->price*$product_detail->discount)/100);
+                        @endphp
+                        <h3><small><del class="text-muted">${{number_format($product_detail->price,2)}}</del></small>    ${{number_format($after_discount,2)}}  </h3>
                             <div class="quickview-peragraph">
                                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia iste laborum ad impedit pariatur esse optio tempora sint ullam autem deleniti nam in quos qui nemo ipsum numquam.</p>
                             </div>
-                            <div class="size">
+                            {{-- <div class="size">
                                 <div class="row">
                                     <div class="col-lg-6 col-12">
                                         <h5 class="title">Size</h5>
@@ -431,7 +441,7 @@
                                         </select>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="quantity">
                                 <!-- Input Order -->
                                 <div class="input-group">
@@ -450,7 +460,8 @@
                                 <!--/ End Input Order -->
                             </div>
                             <div class="add-to-cart">
-                                <a href="#" class="btn">Add to cart</a>
+                                <a href="{{route('add-to-wishlist',$product_detail->slug)}}" class="btn">Add to cart</a>
+
                                 <a href="#" class="btn min"><i class="ti-heart"></i></a>
                                 <a href="#" class="btn min"><i class="fa fa-compress"></i></a>
                             </div>

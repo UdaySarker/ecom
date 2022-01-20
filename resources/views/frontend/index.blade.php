@@ -136,10 +136,6 @@
                                     <div class="single-product">
                                         <div class="product-img">
                                             <a href="{{route('product-detail',$product->slug)}}">
-                                                @php
-                                                    $photo=explode(',',$product->photo);
-                                                // dd($photo);
-                                                @endphp
                                                 <img class="default-img" src="{{asset('storage/'.$product->photo)}}" alt="{{''}}">
                                                 <img class="hover-img" src="{{asset('storage/'.$product->photo)}}" alt="{{''}}">
                                                 @if($product->stock<=0)
@@ -202,7 +198,7 @@
                     <!-- Single Banner  -->
                     <div class="col-lg-6 col-md-6 col-12">
                         <div class="single-banner">
-                            <img src="{{asset('storage/'.$data->photo)}}" alt="{{$photo[0]}}">
+                            <img src="{{asset('storage/'.$data->photo)}}" alt="{{$data->title}}">
                             <div class="content">
                                 <p>{{$data->cat_info['title']}}</p>
                                 <h3>{{$data->title}} <br>Up to<span> {{$data->discount}}%</span></h3>
@@ -238,8 +234,8 @@
                         <div class="single-product">
                             <div class="product-img">
                                 <a href="{{route('product-detail',$product->slug)}}">
-                                    <img class="default-img" src="{{'storage/'.$product->photo}}" alt="{{$photo[0]}}">
-                                    <img class="hover-img" src="{{$photo[0]}}" alt="{{$photo[0]}}">
+                                    <img class="default-img" src="{{asset('stroage/'.$product->photo)}}" alt="{{$product->title}}">
+                                    <img class="hover-img" src="{{asset('stroage/'.$product->photo)}}" alt="{{$product->title}}">
                                     {{-- <span class="out-of-stock">Hot</span> --}}
                                 </a>
                                 <div class="button-head">
@@ -301,7 +297,7 @@
                                 <div class="row">
                                 <div class="col-lg-6 col-md-6 col-12">
                                     <div class="list-image overlay">
-                                        <img src="{{asset('storage/'.$product->photo)}}" alt="{{$photo[0]}}">
+                                        <img src="{{asset('storage/'.$product->photo)}}" alt="{{$product->title}}">
                                         <a href="{{route('add-to-cart',$product->slug)}}" class="buy"><i class="fa fa-shopping-bag"></i></a>
                                     </div>
                                 </div>
@@ -456,7 +452,7 @@
                                         <div class="product-gallery">
                                             <div class="quickview-slider-active">
                                                 <div class="single-slider">
-                                                    <img src="{{asset('storage/'.$product->photo)}}" width="500px" height="500px" alt="{{asset('storage/'.$product->photo)}}">
+                                                    <img src="{{asset('storage/'.$product->photo)}}" width="500px" height="500px" alt="{{$product->title}}">
                                                 </div>
                                             </div>
                                         </div>
@@ -506,9 +502,7 @@
                                             <div class="pages">
                                                 <div class="row">
                                                     <div class="col-lg-6 col-12">
-                                                        <h5 class="title">Pages</h5>
-                                                        <select>
-                                                        </select>
+                                                        <h5 class="title">Pages <span class="badge badge-success">{{$product->pages}}</span></h5>
                                                     </div>
                                                     {{-- <div class="col-lg-6 col-12">
                                                         <h5 class="title">Color</h5>
