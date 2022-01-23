@@ -598,6 +598,11 @@
 @endpush
 
 @push('scripts')
+<script>
+    $(document).onload(function(){
+        alert('hi');
+    })
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 
     {{-- <script>
@@ -731,5 +736,6 @@
             return false
         }
     </script>
+
 
 @endpush
