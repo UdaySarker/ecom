@@ -74,9 +74,6 @@ Route::post('/blog/filter','FrontendController@blogFilter')->name('blog.filter')
 Route::get('blog-cat/{slug}','FrontendController@blogByCategory')->name('blog.category');
 Route::get('blog-tag/{slug}','FrontendController@blogByTag')->name('blog.tag');
 
-// NewsLetter
-Route::post('/subscribe','FrontendController@subscribe')->name('subscribe');
-
 // Product Review
 Route::resource('/review','ProductReviewController');
 Route::post('product/{slug}/review','ProductReviewController@store')->name('review.store');
@@ -86,10 +83,6 @@ Route::post('post/{slug}/comment','PostCommentController@store')->name('post-com
 Route::resource('/comment','PostCommentController');
 // Coupon
 Route::post('/coupon-store','CouponController@couponStore')->name('coupon-store');
-// Payment
-Route::get('payment', 'PayPalController@payment')->name('payment');
-Route::get('cancel', 'PayPalController@cancel')->name('payment.cancel');
-Route::get('payment/success', 'PayPalController@success')->name('payment.success');
 
 
 
@@ -97,9 +90,6 @@ Route::get('payment/success', 'PayPalController@success')->name('payment.success
 
 Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
     Route::get('/','AdminController@index')->name('admin');
-    // Route::get('/file-manager',function(){
-    //     return view('backend.layouts.file-manager');
-    // })->name('file-manager');
     // user route
     Route::resource('users','UsersController');
     // Banner
@@ -147,34 +137,30 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
 });
 
 
-// User section start
+// User section start route prefixed by /user
 Route::group(['prefix'=>'/user','middleware'=>['user']],function(){
     Route::get('/','HomeController@index')->name('user');
-     // Profile
+     // user/Profile
      Route::get('/profile','HomeController@profile')->name('user-profile');
      Route::post('/profile/{id}','HomeController@profileUpdate')->name('user-profile-update');
-    //  Order
+    //  user/Order
     Route::get('/order',"HomeController@orderIndex")->name('user.order.index');
     Route::get('/order/show/{id}',"HomeController@orderShow")->name('user.order.show');
     Route::delete('/order/delete/{id}','HomeController@userOrderDelete')->name('user.order.delete');
-    // Product Review
+    // user/Product Review
     Route::get('/user-review','HomeController@productReviewIndex')->name('user.productreview.index');
     Route::delete('/user-review/delete/{id}','HomeController@productReviewDelete')->name('user.productreview.delete');
     Route::get('/user-review/edit/{id}','HomeController@productReviewEdit')->name('user.productreview.edit');
     Route::patch('/user-review/update/{id}','HomeController@productReviewUpdate')->name('user.productreview.update');
 
-    // Post comment
+    // user/Post comment
     Route::get('user-post/comment','HomeController@userComment')->name('user.post-comment.index');
     Route::delete('user-post/comment/delete/{id}','HomeController@userCommentDelete')->name('user.post-comment.delete');
     Route::get('user-post/comment/edit/{id}','HomeController@userCommentEdit')->name('user.post-comment.edit');
     Route::patch('user-post/comment/udpate/{id}','HomeController@userCommentUpdate')->name('user.post-comment.update');
 
-    // Password Change
+    // user/Password Change
     Route::get('change-password', 'HomeController@changePassword')->name('user.change.password.form');
     Route::post('change-password', 'HomeController@changPasswordStore')->name('change.password');
 
 });
-
-// Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
-//     \UniSharp\LaravelFilemanager\Lfm::routes();
-// });

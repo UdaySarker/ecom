@@ -47,15 +47,14 @@ class AdminController extends Controller
         }
         //return $data;
         $data['password']=Hash::make($request->password);
-        return $data;
-        // $status=$user->fill($data)->save();
-        // if($status){
-        //     request()->session()->flash('success','Successfully updated your profile');
-        // }
-        // else{
-        //     request()->session()->flash('error','Please try again!');
-        // }
-        // return redirect()->back();
+        $status=$user->fill($data)->save();
+        if($status){
+            request()->session()->flash('success','Successfully updated your profile');
+        }
+        else{
+            request()->session()->flash('error','Please try again!');
+        }
+        return redirect()->back();
     }
 
     public function settings(){
@@ -138,10 +137,4 @@ class AdminController extends Controller
     //  return $data;
      return view('backend.index')->with('course', json_encode($array));
     }
-
-    // public function activity(){
-    //     return Activity::all();
-    //     $activity= Activity::all();
-    //     return view('backend.layouts.activity')->with('activities',$activity);
-    // }
 }

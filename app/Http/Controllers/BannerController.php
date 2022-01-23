@@ -101,13 +101,6 @@ class BannerController extends Controller
             'status'=>'required|in:active,inactive',
         ]);
         $data=$request->all();
-        // $slug=Str::slug($request->title);
-        // $count=Banner::where('slug',$slug)->count();
-        // if($count>0){
-        //     $slug=$slug.'-'.date('ymdis').'-'.rand(0,999);
-        // }
-        // $data['slug']=$slug;
-        // return $slug;
         $image_path=$request->file('banner_img')->storeAs('/banners',$request->file('banner_img')->getClientOriginalName());
         unset($data['banner_img']);
         $data['photo']=$image_path;
