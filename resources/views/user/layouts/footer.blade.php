@@ -3,7 +3,7 @@
       <footer class="sticky-footer bg-white">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>Copyright &copy; <a href="https://github.com/Prajwal100" target="_blank">PrajwalRai</a> 2020</span>
+            <span>Copyright &copy; <a href="#" target="_blank">None</a> 2020</span>
           </div>
         </div>
       </footer>
@@ -40,7 +40,8 @@
   </div>
 
   <!-- Bootstrap core JavaScript-->
-  <script src="{{asset('backend/vendor/jquery/jquery.min.js')}}"></script>
+  <script src="{{asset('backend/vendor/jquery/jquery1.8.3.min.js')}}"></script>
+  {{-- <script src="{{asset('backend/vendor/jquery/jquery.min.js')}}"></script> --}}
   <script src="{{asset('backend/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 
   <!-- Core plugin JavaScript-->

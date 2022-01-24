@@ -52,7 +52,9 @@ class OrderController extends Controller
             'coupon'=>'nullable|numeric',
             'phone'=>'numeric|required',
             'post_code'=>'string|nullable',
-            'email'=>'string|required'
+            'email'=>'string|required',
+            'payment_method'=>'required',
+            'shipping'=>'required',
         ]);
         // return $request->all();
 
@@ -118,15 +120,17 @@ class OrderController extends Controller
         }
         // return $order_data['total_amount'];
         $order_data['status']="new";
-        if(request('payment_method')=='paypal'){
-            $order_data['payment_method']='paypal';
-            $order_data['payment_status']='paid';
-        }
-        else{
-            $order_data['payment_method']='cod';
-            $order_data['payment_status']='Unpaid';
-        }
+        // if(request('payment_method')=='paypal'){
+        //     $order_data['payment_method']='paypal';
+        //     $order_data['payment_status']='paid';
+        // }
+        // else{
+        //     $order_data['payment_method']='cod';
+        //     $order_data['payment_status']='Unpaid';
+        // }
+        $order_data['payment_method']=$request->input('payment_method');
         $order->fill($order_data);
+        //return $order_data;
         $status=$order->save();
         if($order)
         // dd($order->id);

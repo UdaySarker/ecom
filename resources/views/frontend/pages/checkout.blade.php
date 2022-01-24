@@ -20,13 +20,13 @@
         </div>
     </div>
     <!-- End Breadcrumbs -->
-            
+
     <!-- Start Checkout -->
     <section class="shop checkout section">
         <div class="container">
                 <form class="form" method="POST" action="{{route('cart.order')}}">
                     @csrf
-                    <div class="row"> 
+                    <div class="row">
 
                         <div class="col-lg-8 col-12">
                             <div class="checkout-form">
@@ -46,7 +46,7 @@
                                     <div class="col-lg-6 col-md-6 col-12">
                                         <div class="form-group">
                                             <label>Last Name<span>*</span></label>
-                                            <input type="text" name="last_name" placeholder="" value="{{old('lat_name')}}">
+                                            <input type="text" name="last_name" placeholder="" value="{{old('last_name')}}">
                                             @error('last_name')
                                                 <span class='text-danger'>{{$message}}</span>
                                             @enderror
@@ -92,7 +92,7 @@
                                                 <option value="AZ">Azerbaijan</option>
                                                 <option value="BS">Bahamas</option>
                                                 <option value="BH">Bahrain</option>
-                                                <option value="BD">Bangladesh</option>
+                                                <option value="BD" selected>Bangladesh</option>
                                                 <option value="BB">Barbados</option>
                                                 <option value="BY">Belarus</option>
                                                 <option value="BE">Belgium</option>
@@ -225,7 +225,7 @@
                                                 <option value="MM">Myanmar [Burma]</option>
                                                 <option value="NA">Namibia</option>
                                                 <option value="NR">Nauru</option>
-                                                <option value="NP" selected="selected">Nepal</option>
+                                                <option value="NP">Nepal</option>
                                                 <option value="NL">Netherlands</option>
                                                 <option value="AN">Netherlands Antilles</option>
                                                 <option value="NC">New Caledonia</option>
@@ -349,7 +349,7 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    
+
                                 </div>
                                 <!--/ End Form -->
                             </div>
@@ -364,6 +364,9 @@
 										    <li class="order_subtotal" data-price="{{Helper::totalCartPrice()}}">Cart Subtotal<span>${{number_format(Helper::totalCartPrice(),2)}}</span></li>
                                             <li class="shipping">
                                                 Shipping Cost
+                                                @error('shipping')
+                                                <span class="text-danger">{{$message}}</span>
+                                                @enderror
                                                 @if(count(Helper::shipping())>0 && Helper::cartCount()>0)
                                                     <select name="shipping" class="nice-select">
                                                         <option value="">Select your address</option>
@@ -371,11 +374,11 @@
                                                         <option value="{{$shipping->id}}" class="shippingOption" data-price="{{$shipping->price}}">{{$shipping->type}}: ${{$shipping->price}}</option>
                                                         @endforeach
                                                     </select>
-                                                @else 
+                                                @else
                                                     <span>Free</span>
                                                 @endif
                                             </li>
-                                            
+
                                             @if(session('coupon'))
                                             <li class="coupon_price" data-price="{{session('coupon')['value']}}">You Save<span>${{number_format(session('coupon')['value'],2)}}</span></li>
                                             @endif
@@ -402,9 +405,10 @@
                                             {{-- <label class="checkbox-inline" for="1"><input name="updates" id="1" type="checkbox"> Check Payments</label> --}}
                                             <form-group>
                                                 <input name="payment_method"  type="radio" value="cod"> <label> Cash On Delivery</label><br>
-                                                <input name="payment_method"  type="radio" value="paypal"> <label> PayPal</label> 
+                                                <input name="payment_method"  type="radio" value="paypal"> <label> PayPal</label><br>
+                                                <input name="payment_method"  type="radio" value="bkash"><label><span class="text-danger">&nbsp;bKash</span><label>
                                             </form-group>
-                                            
+
                                         </div>
                                     </div>
                                 </div>
@@ -432,7 +436,7 @@
         </div>
     </section>
     <!--/ End Checkout -->
-    
+
     <!-- Start Shop Services Area  -->
     <section class="shop-services section home">
         <div class="container">
@@ -477,7 +481,7 @@
         </div>
     </section>
     <!-- End Shop Services -->
-    
+
     <!-- Start Shop Newsletter  -->
     <section class="shop-newsletter section">
         <div class="container">
@@ -569,8 +573,8 @@
 		$(document).ready(function(){
 			$('.shipping select[name=shipping]').change(function(){
 				let cost = parseFloat( $(this).find('option:selected').data('price') ) || 0;
-				let subtotal = parseFloat( $('.order_subtotal').data('price') ); 
-				let coupon = parseFloat( $('.coupon_price').data('price') ) || 0; 
+				let subtotal = parseFloat( $('.order_subtotal').data('price') );
+				let coupon = parseFloat( $('.coupon_price').data('price') ) || 0;
 				// alert(coupon);
 				$('#order_total_price span').text('$'+(subtotal + cost-coupon).toFixed(2));
 			});

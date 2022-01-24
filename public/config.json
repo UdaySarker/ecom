@@ -1,0 +1,12 @@
+{
+    "createURL" :"https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/payment/create",
+    "executeURL" :"https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/payment/execute/",
+    "tokenURL" : "https://checkout.sandbox.bka.sh/v1.2.0-beta/checkout/token/grant",
+    "script" : "https://scripts.sandbox.bka.sh/versions/1.2.0-beta/checkout/bKash-checkout-sandbox.js",
+    "app_key": "abcdxx2369",
+    "proxy" : "",
+    "app_secret": "bkashSup3rS3cRet",
+    "username" : "bkashTest",
+    "password" : "bkashPassword1",
+    "token" : ""
+}

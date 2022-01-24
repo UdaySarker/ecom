@@ -162,5 +162,11 @@ Route::group(['prefix'=>'/user','middleware'=>['user']],function(){
     // user/Password Change
     Route::get('change-password', 'HomeController@changePassword')->name('user.change.password.form');
     Route::post('change-password', 'HomeController@changPasswordStore')->name('change.password');
+    Route::get('payment/success', 'PayPalController@success')->name('payment.success');
+
+    //bkash payment
+    Route::post('token', 'PaymentController@token')->name('token');
+Route::get('createpayment', 'PaymentController@createpayment')->name('createpayment');
+Route::get('executepayment', 'PaymentController@executepayment')->name('executepayment');
 
 });
