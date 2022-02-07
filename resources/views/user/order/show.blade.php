@@ -98,7 +98,12 @@
                     <tr>
                         <td>Payment Status</td>
                         @if($order->payment_status=='unpaid')
-                        <td><span class="badge badge-danger badge-sm">{{$order->payment_status}} </span><span><button id="bKash_button" class="btn btn-success btn-sm">Pay Now</button></span></td>
+                        <td>
+                            <span class="badge badge-danger badge-sm">{{$order->payment_status}} </span>
+                            <span>
+                                <button token="{{csrf_token()}}" order="{{$order->order_number}}" endpoint="{{route('payajax')}}" id="sslczPayBtn" class="btn btn-success btn-sm">Pay Now</button>
+                            </span>
+                        </td>
                         @else
                         <td class="badge badge-success badge-sm">{{$order->payment_status}}</td>
                         @endif
@@ -160,115 +165,28 @@
 </style>
 @endpush
 @push('scripts')
-<script id="myScript"
-src="https://scripts.sandbox.bka.sh/versions/1.2.0-beta/checkout/bKash-checkout-sandbox.js"></script>
-
 <script>
-    var accessToken = '';
-
-    $(document).ready(function () {
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-
-        $.ajax({
-            url: "{!! route('token') !!}",
-            type: 'POST',
-            contentType: 'application/json',
-            success: function (data) {
-                console.log('got data from token  ..');
-                console.log(JSON.stringify(data));
-
-                accessToken = JSON.stringify(data);
-            },
-            error: function () {
-                console.log('error');
-
-            }
-        });
-
-        var paymentConfig = {
-            createCheckoutURL: "{!! route('createpayment') !!}",
-            executeCheckoutURL: "{!! route('executepayment') !!}"
+    var obj={};
+    obj.order_number='{{$order->order_number}}';
+    obj.cus_fname='{{$order->first_name}}';
+    obj.cus_lname='{{$order->last_name}}';
+    obj.cus_country='{{$order->country}}';
+    obj.cus_phone={{$order->phone}};
+    obj.email='{{$order->email}}';
+    obj.address='{{$order->address1}}';
+    obj.amount={{number_format($order->total_amount,2)}};
+    obj.sub_total={{number_format($order->sub_total,2)}};
+    obj.quantity={{$order->quantity}};
+    $('#sslczPayBtn').prop('postdata',obj);
+    // $('#sslczPayBtn').prop('token',document.getElementsByTagName("META")[0].content)
+    (function (window, document) {
+        var loader = function () {
+            var script = document.createElement("script"), tag = document.getElementsByTagName("script")[0];
+            script.src = "https://sandbox.sslcommerz.com/embed.min.js?" + Math.random().toString(36).substring(7);
+            tag.parentNode.insertBefore(script, tag);
         };
 
-
-        var paymentRequest;
-        paymentRequest = {amount: $('.amount').text(), intent: 'sale', invoice: $('.invoice').text()};
-        console.log(JSON.stringify(paymentRequest));
-
-        bKash.init({
-            paymentMode: 'checkout',
-            paymentRequest: paymentRequest,
-            createRequest: function (request) {
-                console.log('=> createRequest (request) :: ');
-                console.log(request);
-
-                $.ajax({
-                    url: paymentConfig.createCheckoutURL + "?amount=" + paymentRequest.amount + "&invoice=" + paymentRequest.invoice,
-                    type: 'GET',
-                    contentType: 'application/json',
-                    success: function (data) {
-                        console.log('got data from create  ..');
-                        console.log('data ::=>');
-                        console.log(JSON.stringify(data));
-
-                        var obj = JSON.parse(data);
-
-                        if (data && obj.paymentID != null) {
-                            paymentID = obj.paymentID;
-                            bKash.create().onSuccess(obj);
-                        }
-                        else {
-                            console.log('error');
-                            bKash.create().onError();
-                        }
-                    },
-                    error: function () {
-                        console.log('error');
-                        bKash.create().onError();
-                    }
-                });
-            },
-
-            executeRequestOnAuthorization: function () {
-                console.log('=> executeRequestOnAuthorization');
-                $.ajax({
-                    url: paymentConfig.executeCheckoutURL + "?paymentID=" + paymentID,
-                    type: 'GET',
-                    contentType: 'application/json',
-                    success: function (data) {
-                        console.log('got data from execute  ..');
-                        console.log('data ::=>');
-                        console.log(JSON.stringify(data));
-
-                        data = JSON.parse(data);
-                        if (data && data.paymentID != null) {
-                            alert('[SUCCESS] data : ' + JSON.stringify(data));
-                            window.location.href = "{!! route('user.order.index') !!}";
-                        }
-                        else {
-                            bKash.execute().onError();
-                        }
-                    },
-                    error: function () {
-                        bKash.execute().onError();
-                    }
-                });
-            }
-        });
-
-        console.log("Right after init ");
-    });
-
-    function callReconfigure(val) {
-        bKash.reconfigure(val);
-    }
-
-    function clickPayButton() {
-        $("#bKash_button").trigger('click');
-    }
+        window.addEventListener ? window.addEventListener("load", loader, false) : window.attachEvent("onload", loader);
+    })(window, document);
 </script>
 @endpush
