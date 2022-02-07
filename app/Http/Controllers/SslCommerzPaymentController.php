@@ -174,11 +174,13 @@ class SslCommerzPaymentController extends Controller
 
     public function success(Request $request)
     {
-        echo "Transaction is Successful";
+        //echo "Transaction is Successful";
+        request()->session()->flash('success','Transaction is Successful');
 
         $tran_id = $request->input('tran_id');
         $amount = $request->input('amount');
         $currency = $request->input('currency');
+        $pay_type= $request->input('card_type');
 
         $sslc = new SslCommerzNotification();
 
@@ -198,9 +200,10 @@ class SslCommerzPaymentController extends Controller
                 */
                 $update_product = DB::table('orders')
                     ->where('transaction_id', $tran_id)
-                    ->update(['payment_status' => 'paid']);
+                    ->update(['payment_status' => 'paid','currency'=>$pay_type]);
 
-                echo "<br >Transaction is successfully Completed";
+               // echo "<br >Transaction is successfully Completed";
+                request()->session()->flash('success','Transaction is successfully Completed');
             } else {
                 /*
                 That means IPN did not work or IPN URL was not set in your merchant panel and Transation validation failed.
@@ -209,16 +212,19 @@ class SslCommerzPaymentController extends Controller
                 $update_product = DB::table('orders')
                     ->where('transaction_id', $tran_id)
                     ->update(['status' => 'unpaid']);
-                echo "validation Fail";
+                //echo "validation Fail";
+                request()->session()->flash('error','Validation Failed');
             }
         } else if ($order_detials->payment_status == 'paid') {
             /*
              That means through IPN Order status already updated. Now you can just show the customer that transaction is completed. No need to udate database.
              */
-            echo "Transaction is successfully Completed";
+           // echo "Transaction is successfully Completed";
+           request()->session()->flash('success','Transaction is successfully completed');
         } else {
             #That means something wrong happened. You can redirect customer to your product page.
-            echo "Invalid Transaction";
+            //echo "Invalid Transaction";
+            request()->session()->flash('error','Invalid Transaction');
         }
         return redirect(route('user.order.index'));
 

@@ -84,7 +84,7 @@ Route::post('post/{slug}/comment','PostCommentController@store')->name('post-com
 Route::resource('/comment','PostCommentController');
 // Coupon
 Route::post('/coupon-store','CouponController@couponStore')->name('coupon-store');
-
+Route::resource('/oldsale','OldBookSaleController');
 
 
 // Backend section start
