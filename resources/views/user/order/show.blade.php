@@ -93,7 +93,13 @@
                     </tr>
                     <tr>
                       <td>Payment Method</td>
-                      <td> : {{$order->payment_method}}</td>
+                      <td>
+                          @if ($order->payment_method == 'ibmb')
+                            <span>Internet/Mobile Banking</span>
+                          @else
+                            <span>Cash On Delivery</span>
+                          @endif
+                      </td>
                     </tr>
                     <tr>
                         <td>Payment Status</td>

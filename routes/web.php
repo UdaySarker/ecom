@@ -84,7 +84,7 @@ Route::post('post/{slug}/comment','PostCommentController@store')->name('post-com
 Route::resource('/comment','PostCommentController');
 // Coupon
 Route::post('/coupon-store','CouponController@couponStore')->name('coupon-store');
-Route::resource('/oldsale','OldBookSaleController');
+
 
 
 // Backend section start
@@ -165,7 +165,8 @@ Route::group(['prefix'=>'/user','middleware'=>['user']],function(){
     Route::post('change-password', 'HomeController@changPasswordStore')->name('change.password');
     Route::get('payment/success', 'PayPalController@success')->name('payment.success');
 
-
+    //old book
+    Route::resource('/oldsale','OldBookSaleController');
     // SSLCOMMERZ Start
     Route::get('example1', [SslCommerzPaymentController::class, 'exampleEasyCheckout']);
     Route::get('example2', [SslCommerzPaymentController::class, 'exampleHostedCheckout']);

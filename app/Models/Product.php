@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Cart;
+use Illuminate\Support\Facades\Auth;
+
 class Product extends Model
 {
     protected $fillable=['title','slug','summary','description','cat_id','child_cat_id','price','author_id','publisher_id','discount','status','photo','pages','stock','is_featured','condition'];
@@ -41,6 +43,11 @@ class Product extends Model
 
     public function wishlists(){
         return $this->hasMany(Wishlist::class)->whereNotNull('cart_id');
+    }
+
+    public static function getOldBookByUser()
+    {
+        echo Auth::user();
     }
 
 }

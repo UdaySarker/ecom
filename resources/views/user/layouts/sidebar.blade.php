@@ -32,14 +32,27 @@
             <span>Orders</span>
         </a>
     </li>
-
+    <!-- Old Book Sale-->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#brandCollapse" aria-expanded="true" aria-controls="brandCollapse">
+          <i class="fas fa-table"></i>
+          <span>Old Book Sale</span>
+        </a>
+        <div id="brandCollapse" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Old Book Sale Options:</h6>
+            <a class="collapse-item" href="{{route('oldsale.index')}}">Old Books</a>
+            <a class="collapse-item" href="{{route('oldsale.create')}}">Add Old Books</a>
+          </div>
+        </div>
+    </li>
     <!-- Reviews -->
     <li class="nav-item">
         <a class="nav-link" href="{{route('user.productreview.index')}}">
             <i class="fas fa-comments"></i>
             <span>Reviews</span></a>
     </li>
-    
+
 
     <!-- Divider -->
     <hr class="sidebar-divider">
