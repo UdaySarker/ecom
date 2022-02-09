@@ -1,5 +1,4 @@
-@extends('user.layouts.master')
-
+@extends('backend.layouts.master')
 @section('main-content')
  <!-- DataTales Example -->
  <div class="card shadow mb-4">
@@ -9,57 +8,54 @@
          </div>
      </div>
     <div class="card-header py-3">
-      <h6 class="m-0 font-weight-bold text-primary float-left">Old Book Lists</h6>
+      <h6 class="m-0 font-weight-bold text-primary float-left">Order Lists</h6>
     </div>
     <div class="card-body">
       <div class="table-responsive">
-        @if(count($products)>0)
+        @if(count($oldBooks)>0)
         <table class="table table-bordered" id="order-dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>
               <th>S.N.</th>
-              <th>Title</th>
-              <th>Author</th>
-              <th>Publisher</th>
+              <th>Book Title</th>
+              <th>Book Author</th>
+              <th>Book Publishers</th>
+              <th>Book Uploaded By</th>
               <th>Price</th>
+              <th>Thumbnail</th>
+              <th>Status</th>
               <th>Action</th>
             </tr>
           </thead>
-          <tfoot>
-            <tr>
-                <th>S.N.</th>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Publisher</th>
-                <th>Price</th>
-                <th>Action</th>
-              </tr>
-          </tfoot>
           <tbody>
-            @foreach($products as $product)
+            @foreach($oldBooks as $oldBook)
                 <tr>
-                    <td>{{$product->id}}</td>
-                    <td>{{$product->title}}</td>
+                    <td>{{$oldBook->id}}</td>
+                    <td>{{$oldBook->title}}</td>
                     @php
-                        $author=DB::table('authors')->find($product->author_id);
-                        $publisher=DB::table('publishers')->find($product->publisher_id);
+                        $user=DB::table('users')->find($oldBook->user_id);
+                        $author=DB::table('authors')->find($oldBook->author_id);
+                        $publisher=DB::table('publishers')->find($oldBook->publisher_id);
                     @endphp
                     <td>{{$author->name}}</td>
                     <td>{{$publisher->title}}</td>
-                    <td>{{$product->price}}</td>
+                    <td>{{$user->name}}</td>
+                    <td>{{number_format($oldBook->price,2)}}</td>
+                    <td><img src="{{asset('storage/'.$oldBook->photo)}}" alt=""></td>
+                    <td>{{$oldBook->status}}</td>
                     <td>
-                        <a href="{{route('oldsale.show',$product->id)}}" class="btn btn-warning btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="view" data-placement="bottom"><i class="fas fa-eye"></i></a>
-                        <form method="POST" action="{{route('oldsale.destroy',[$product->id])}}">
+                        <a href="{{route('user.order.show',$oldBook->id)}}" class="btn btn-warning btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="view" data-placement="bottom"><i class="fas fa-eye"></i></a>
+                        <form method="POST" action="{{route('user.order.delete',[$oldBook->id])}}">
                           @csrf
                           @method('delete')
-                              <button class="btn btn-danger btn-sm dltBtn" data-id={{$product->id}} style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>
+                              <button class="btn btn-danger btn-sm dltBtn" data-id={{$oldBook->id}} style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>
                         </form>
                     </td>
                 </tr>
             @endforeach
           </tbody>
         </table>
-        {{-- <span style="float:right">{{$orders->links()}}</span> --}}
+        {{-- <span style="float:right">{{$oldBook->links()}}</span> --}}
         @else
           <h6 class="text-center">No orders found!!! Please order some products</h6>
         @endif

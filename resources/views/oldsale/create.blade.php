@@ -74,24 +74,24 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="size">Pages<span class="text-danger">*</span></label>
-                              <input type="number" class="form-control" name="pages">
+                              <input type="number" class="form-control" value="{{old('pages')}}" name="pages">
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="condition">Condition</label>
-                            <select name="condition" class="form-control">
+                            <select name="condition" class="form-control" disabled>
                                 <option value="">--Select Condition--</option>
                                 <option value="default">Default</option>
                                 <option value="new">New</option>
-                                <option value="old">Old Book</option>
+                                <option value="old" selected>Old Book</option>
                                 <option value="best-seller">Best Seller</option>
                                 <option value="trending">Trending</option>
                             </select>
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label for="status" class="col-form-label pt-0">Status <span class="text-danger">*</span></label>
                             <select name="status" class="form-control">
                                 <option value="active">Active</option>
@@ -100,30 +100,57 @@
                               @error('status')
                               <span class="text-danger">{{$message}}</span>
                               @enderror
+                        </div> --}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group" style="" >
+                            <label for="publisher">Publisher</label>
+                            {{-- {{$brands}} --}}
+
+                            <select name="publisher_id" class="form-control">
+                                <option value="">--Select Publisher--</option>
+                               @foreach($publishers as $publisher)
+                                <option value="{{$publisher->id}}">{{$publisher->title}}</option>
+                               @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="author">Author</label>
+                            <select name="author_id" id="author" class="form-control">
+                                <option value="">--Select Author--</option>
+                                @foreach ($authors as $author)
+                                    <option value="{{$author->id}}">{{$author->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="price" class="col-form-label">Price<span class="text-danger">*</span></label>
+                            <input id="price" type="number" name="price" placeholder="Enter price"  value="{{old('price')}}" class="form-control">
+                            @error('price')
+                            <span class="text-danger">{{$message}}</span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="stock">Quantity <span class="text-danger">*</span></label>
+                            <input id="quantity" type="number" name="stock" min="0" placeholder="Enter quantity"  value="{{old('stock')}}" class="form-control">
+                            @error('stock')
+                            <span class="text-danger">{{$message}}</span>
+                            @enderror
                         </div>
                     </div>
                 </div>
 
-                <div class="form-group" style="" >
-                    <label for="publisher">Publisher</label>
-                    {{-- {{$brands}} --}}
 
-                    <select name="publisher_id" class="form-control">
-                        <option value="">--Select Publisher--</option>
-                       @foreach($publishers as $publisher)
-                        <option value="{{$publisher->id}}">{{$publisher->title}}</option>
-                       @endforeach
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="author">Author</label>
-                    <select name="author_id" id="author" class="form-control">
-                        <option value="">--Select Author--</option>
-                        @foreach ($authors as $author)
-                            <option value="{{$author->id}}">{{$author->name}}</option>
-                        @endforeach
-                    </select>
-                </div>
                 {{-- <div class="form-group" style="padding-top: 31px">
                     <label for="is_featured">Is Featured</label><br>
                     <input type="checkbox" name='is_featured' id='is_featured' value='1' checked> Yes
@@ -134,15 +161,8 @@
         </div>
         <div class="row">
             <div class="col">
-                <div class="form-group">
-                    <label for="price" class="col-form-label">Price<span class="text-danger">*</span></label>
-                    <input id="price" type="number" name="price" placeholder="Enter price"  value="{{old('price')}}" class="form-control">
-                    @error('price')
-                    <span class="text-danger">{{$message}}</span>
-                    @enderror
-                </div>
             </div>
-            <div class="col">
+            {{-- <div class="col">
                 <div class="form-group">
                     <label for="discount" class="col-form-label">Discount(%)</label>
                     <input id="discount" type="number" name="discount" min="0" max="100" placeholder="Enter discount"  value="{{old('discount')}}" class="form-control">
@@ -150,15 +170,8 @@
                     <span class="text-danger">{{$message}}</span>
                     @enderror
                 </div>
-            </div>
+            </div> --}}
             <div class="col" style="padding-top:6px">
-                <div class="form-group">
-                    <label for="stock">Quantity <span class="text-danger">*</span></label>
-                    <input id="quantity" type="number" name="stock" min="0" placeholder="Enter quantity"  value="{{old('stock')}}" class="form-control">
-                    @error('stock')
-                    <span class="text-danger">{{$message}}</span>
-                    @enderror
-                </div>
             </div>
         </div>
               {{-- {{$categories}} --}}

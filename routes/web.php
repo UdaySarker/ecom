@@ -135,6 +135,9 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
     // Password Change
     Route::get('change-password', 'AdminController@changePassword')->name('change.password.form');
     Route::post('change-password', 'AdminController@changPasswordStore')->name('change.password');
+
+    //old book sale admin
+    Route::get('/oldbooksale','OldBookSaleController@oldBookSaleAdminIndex')->name('oldbooksale.index');
 });
 
 

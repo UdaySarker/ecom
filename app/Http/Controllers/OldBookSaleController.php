@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Author;
 use App\Models\Category;
+use App\Models\OldBookSaleModel;
 use App\Models\Order;
 use Illuminate\Support\Str;
 use App\Models\Product;
@@ -20,10 +21,11 @@ class OldBookSaleController extends Controller
      */
     public function index()
     {
-        $products=Product::getAllProduct();
+        $products=OldBookSaleModel::getOldBookByUser(Auth::user()->id);
         $orders= [];
         return view('oldsale.index')
-        ->with('orders',$orders);
+        ->with('orders',$orders)
+        ->with('products',$products);
     }
 
     /**
@@ -50,9 +52,8 @@ class OldBookSaleController extends Controller
      */
     public function store(Request $request)
     {
-        dd(Product::getOldBookByUser());
         $this->validate($request,[
-            'title'=>'required|string|min:4|unique:products,title',
+            'title'=>'required|string|min:4|unique:old_books,title',
             'summary'=>'required|string',
             'description'=>'required|string|nullable',
             'product_img'=>'image|mimes:png,jpg,jpeg',
@@ -62,10 +63,9 @@ class OldBookSaleController extends Controller
             'publisher_id'=>'nullable|exists:publishers,id',
             'author_id'=>'nullable|exists:authors,id',
             'child_cat_id'=>'nullable|exists:categories,id',
-            'status'=>'in:active,inactive',
+            'status'=>'in:procsssing,approved',
             'condition'=>'in:default,new,old,hot,best-seller,trending',
             'price'=>'numeric|required',
-            'discount'=>'nullable|numeric'
         ]);
 
         $data=$request->all();
@@ -75,14 +75,15 @@ class OldBookSaleController extends Controller
         if($count>0){
             $slug=$slug.'-'.date('ymdis').'-'.rand(0,999);
         }
+        $data['user_id']=Auth::user()->id;
         $data['slug']=$slug;
-        $data['is_featured']=0;
         $pages=$request->input('pages');
         $data['pages']=$pages;
         $image_path=$request->file('product_img')->storeAs('oldbooks',$request->file('product_img')->getClientOriginalName());
         $data['photo']=$image_path;
         unset($data['product_img']);
-        $status=Product::create($data);
+       // return $data;
+        $status=OldBookSaleModel::create($data);
         if($status){
             request()->session()->flash('success','Product Successfully added');
         }
@@ -100,7 +101,10 @@ class OldBookSaleController extends Controller
      */
     public function show($id)
     {
-        //
+
+        $oldBook=OldBookSaleModel::find($id);
+        $products=OldBookSaleModel::all();
+        return view('oldsale.show',['oldBook'=>$oldBook,'products'=>$products]);
     }
 
     /**
@@ -134,6 +138,27 @@ class OldBookSaleController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $oldBook=OldBookSaleModel::find($id);
+        if($oldBook){
+            $status=$oldBook->delete();
+            if($status){
+                request()->session()->flash('success','Old Book Successfully deleted');
+            }
+            else{
+                request()->session()->flash('error','Old Book can not deleted');
+            }
+            return redirect()->route('oldsale.index');
+        }
+        else{
+            request()->session()->flash('error','Old Book can not found');
+            return redirect()->back();
+        }
+    }
+
+    public function oldBookSaleAdminIndex()
+    {
+        $oldBooks=OldBookSaleModel::all();
+        return view('backend.oldsaleadmin.index')
+        ->with('oldBooks',$oldBooks);
     }
 }
