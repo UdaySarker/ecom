@@ -9,7 +9,7 @@ use App\Models\PostCategory;
 use App\Models\Post;
 use App\Models\Cart;
 use App\User;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -421,6 +421,15 @@ class FrontendController extends Controller
                 request()->session()->flash('error','Already Subscribed');
                 return back();
             }
+    }
+
+    public function oldBookSale()
+    {
+        $oldBooks=DB::table('old_books')
+                    ->where('status','=','approve')
+                    ->get();
+        return view('frontend.pages.oldbook')
+                    ->with('oldBooks',$oldBooks);
     }
 
 }

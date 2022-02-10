@@ -24,7 +24,7 @@ class CreateOldBooksTable extends Migration
             $table->integer('stock')->default(1);
             $table->string('pages')->default('0')->nullable();
             $table->enum('condition',['old'])->default('old');
-            $table->enum('status',['processing','approved'])->default('processing');
+            $table->enum('status',['processing','approve','reject'])->default('processing');
             $table->float('price');
             $table->unsignedBigInteger('publisher_id')->nullable();
             $table->unsignedBigInteger('cat_id')->nullable();

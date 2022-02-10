@@ -43,6 +43,7 @@ Route::get('/product-sub-cat/{slug}/{sub_slug}','FrontendController@productSubCa
 Route::get('/product-brand/{slug}','FrontendController@productBrand')->name('product-brand');
 // Cart section
 Route::get('/add-to-cart/{slug}','CartController@addToCart')->name('add-to-cart')->middleware('user');
+Route::get('/add-to-cart-old/{slug}','CartController@addToCartOld')->name('add-to-cart-old')->middleware('user');
 Route::post('/add-to-cart','CartController@singleAddToCart')->name('single-add-to-cart')->middleware('user');
 Route::get('cart-delete/{id}','CartController@cartDelete')->name('cart-delete');
 Route::post('cart-update','CartController@cartUpdate')->name('cart.update');
@@ -84,10 +85,11 @@ Route::post('post/{slug}/comment','PostCommentController@store')->name('post-com
 Route::resource('/comment','PostCommentController');
 // Coupon
 Route::post('/coupon-store','CouponController@couponStore')->name('coupon-store');
+//old book sale
+Route::get('/oldbooksale','FrontendController@oldBookSale')->name('oldsalefront');
 
 
-
-// Backend section start
+// Backend section start prefix by /admin
 
 Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
     Route::get('/','AdminController@index')->name('admin');
@@ -138,6 +140,8 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
 
     //old book sale admin
     Route::get('/oldbooksale','OldBookSaleController@oldBookSaleAdminIndex')->name('oldbooksale.index');
+    Route::get('/oldbooksale/show/{id}','OldBookSaleController@oldBookSaleAdminShow')->name('oldbooksale.show');
+    Route::post('/oldbooksale/update/{id}','OldBookSaleController@oldBookSaleAdminUpdateStatus')->name('oldbooksale.updateStatus');
 });
 
 

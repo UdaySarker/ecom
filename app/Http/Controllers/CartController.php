@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Wishlist;
 use App\Models\Cart;
+use App\Models\OldBookSaleModel;
 use Illuminate\Support\Str;
 use Helper;
 class CartController extends Controller
@@ -24,7 +25,7 @@ class CartController extends Controller
         $product = Product::where('slug', $request->slug)->first();
         // return $product;
         if (empty($product)) {
-            request()->session()->flash('error','Invalid Products');
+            request()->session()->flash('error','Products Not Found');
             return back();
         }
 
@@ -53,7 +54,44 @@ class CartController extends Controller
         request()->session()->flash('success','Product successfully added to cart');
         return back();
     }
+    public function addToCartOld(Request $request)
+    {
+        if (empty($request->slug)) {
+            request()->session()->flash('error','Invalid Products');
+            return back();
+        }
+        $oldbook = OldBookSaleModel::where('slug', $request->slug)->first();
+        // return $product;
+        if (empty($oldbook)) {
+            request()->session()->flash('error','Products Not Found');
+            return back();
+        }
 
+        $already_cart = Cart::where('user_id', auth()->user()->id)->where('order_id',null)->where('product_id', $oldbook->id)->first();
+        // return $already_cart;
+        if($already_cart) {
+            // dd($already_cart);
+            $already_cart->quantity = $already_cart->quantity + 1;
+            $already_cart->amount = $oldbook->price+ $already_cart->amount;
+            // return $already_cart->quantity;
+            if ($already_cart->product->stock < $already_cart->quantity || $already_cart->product->stock <= 0) return back()->with('error','Stock not sufficient!.');
+            $already_cart->save();
+
+        }else{
+
+            $cart = new Cart;
+            $cart->user_id = auth()->user()->id;
+            $cart->product_id = $oldbook->id;
+            $cart->price = $oldbook->price;
+            $cart->quantity = 1;
+            $cart->amount=$cart->price*$cart->quantity;
+            if ($oldbook->stock < $cart->quantity || $oldbook->stock <= 0) return back()->with('error','Stock not sufficient!.');
+            $cart->save();
+            $wishlist=Wishlist::where('user_id',auth()->user()->id)->where('cart_id',null)->update(['cart_id'=>$cart->id]);
+        }
+        request()->session()->flash('success','Product successfully added to cart');
+        return back();
+    }
     public function singleAddToCart(Request $request){
         $request->validate([
             'slug'      =>  'required',

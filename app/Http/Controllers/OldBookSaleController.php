@@ -161,4 +161,26 @@ class OldBookSaleController extends Controller
         return view('backend.oldsaleadmin.index')
         ->with('oldBooks',$oldBooks);
     }
+
+    public function oldBookSaleAdminShow($id)
+    {
+        $oldBook= OldBookSaleModel::find($id);
+        return view('backend.oldsaleadmin.show')
+        ->with('oldBook',$oldBook);
+    }
+    public function oldBookSaleAdminUpdateStatus(Request $request,$id)
+    {
+        $oldBook= OldBookSaleModel::find($id);
+        $oldBook->status=$request->input('status');
+        $status=$oldBook->save();
+        if($status)
+        {
+            return redirect(route('oldbooksale.show',$oldBook->id));
+            request()->session()->flash('Status Changed');
+        }
+        else
+        {
+            request()->session()->flash('Something went wrong');
+        }
+    }
 }

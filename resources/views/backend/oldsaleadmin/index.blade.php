@@ -17,10 +17,10 @@
           <thead>
             <tr>
               <th>S.N.</th>
-              <th>Book Title</th>
-              <th>Book Author</th>
-              <th>Book Publishers</th>
-              <th>Book Uploaded By</th>
+              <th>Title</th>
+              <th>Author</th>
+              <th>Publishers</th>
+              <th>Uploaded By</th>
               <th>Price</th>
               <th>Thumbnail</th>
               <th>Status</th>
@@ -41,10 +41,16 @@
                     <td>{{$publisher->title}}</td>
                     <td>{{$user->name}}</td>
                     <td>{{number_format($oldBook->price,2)}}</td>
-                    <td><img src="{{asset('storage/'.$oldBook->photo)}}" alt=""></td>
-                    <td>{{$oldBook->status}}</td>
+                    <td><img height="50px" width="50px" src="{{asset('storage/'.$oldBook->photo)}}" alt=""></td>
+                    @if($oldBook->status=='approve')
+                    <td><span class="badge badge-success">{{$oldBook->status}}</span></td>
+                    @elseif ($oldBook->status=='reject')
+                    <td><span class="badge badge-danger">{{$oldBook->status}}</span></td>
+                    @else
+                    <td><span class="badge badge-dark">{{$oldBook->status}}</span></td>
+                    @endif
                     <td>
-                        <a href="{{route('user.order.show',$oldBook->id)}}" class="btn btn-warning btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="view" data-placement="bottom"><i class="fas fa-eye"></i></a>
+                        <a href="{{route("oldbooksale.show",$oldBook->id)}}" class="btn btn-warning btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="view" data-placement="bottom"><i class="fas fa-eye"></i></a>
                         <form method="POST" action="{{route('user.order.delete',[$oldBook->id])}}">
                           @csrf
                           @method('delete')

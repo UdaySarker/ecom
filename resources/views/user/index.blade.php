@@ -103,6 +103,7 @@
               <th>Quantity</th>
               <th>Total Amount</th>
               <th>Status</th>
+              <th>Payment Status</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -115,6 +116,7 @@
               <th>Quantity</th>
               <th>Total Amount</th>
               <th>Status</th>
+              <th>Payment Status</th>
               <th>Action</th>
               </tr>
           </tfoot>
@@ -138,6 +140,13 @@
                         @else
                           <span class="badge badge-danger">{{$order->status}}</span>
                         @endif
+                    </td>
+                    <td>
+                    @if ($order->payment_status=='paid')
+                    <span class="badge badge-success">{{$order->payment_status}}</span>
+                    @else
+                    <span class="badge badge-danger">{{$order->payment_status}}</span>
+                    @endif
                     </td>
                     <td>
                         <a href="{{route('user.order.show',$order->id)}}" class="btn btn-warning btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="view" data-placement="bottom"><i class="fas fa-eye"></i></a>
