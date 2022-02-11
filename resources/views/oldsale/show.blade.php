@@ -61,7 +61,7 @@
                     </tr>
                     <tr>
                         <td>Status</td>
-                        <td>{{$oldBook->status}}</td>
+                        <td>{{$oldBook->admin_status}}</td>
                     </tr>
                     <tr>
                         <td>Price</td>

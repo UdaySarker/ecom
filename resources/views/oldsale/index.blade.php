@@ -50,11 +50,11 @@
                     <td>{{$publisher->title}}</td>
                     <td>{{$product->price}}</td>
                     @if($product->status=='approve')
-                    <td><span class="badge badge-success">{{$product->status}}</span></td>
+                    <td><span class="badge badge-success">{{$product->admin_status}}</span></td>
                     @elseif ($product->status=='reject')
-                    <td><span class="badge badge-danger">{{$product->status}}</span></td>
+                    <td><span class="badge badge-danger">{{$product->admin_status}}</span></td>
                     @else
-                    <td><span class="badge badge-dark">{{$product->status}}</span></td>
+                    <td><span class="badge badge-dark">{{$product->admin_status}}</span></td>
                     @endif
                     <td>
                         <a href="{{route('oldsale.show',$product->id)}}" class="btn btn-warning btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="view" data-placement="bottom"><i class="fas fa-eye"></i></a>

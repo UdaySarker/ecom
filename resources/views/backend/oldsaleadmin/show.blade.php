@@ -72,12 +72,12 @@
                 <tr class="table-light">
                     <td>Current Status</td>
                     <td>:</td>
-                    @if($oldBook->status=='approve')
-                    <td><span class="badge badge-success">{{$oldBook->status}}</span></td>
-                    @elseif ($oldBook->status=='reject')
-                    <td><span class="badge badge-danger">{{$oldBook->status}}</span></td>
+                    @if($oldBook->admin_status=='approve')
+                    <td><span class="badge badge-success">{{$oldBook->admin_status}}</span></td>
+                    @elseif ($oldBook->admin_status=='reject')
+                    <td><span class="badge badge-danger">{{$oldBook->admin_status}}</span></td>
                     @else
-                    <td><span class="badge badge-dark">{{$oldBook->status}}</span></td>
+                    <td><span class="badge badge-dark">{{$oldBook->admin_status}}</span></td>
                     @endif
                 </tr>
                 <tr class="table-light">
@@ -86,7 +86,7 @@
                     <td>
                         <form action="{{route('oldbooksale.updateStatus',$oldBook->id)}}" method="post">
                             @csrf
-                            <select name="status" id="">
+                            <select name="admin_status" id="">
                                 <option value="approve">Approve</option>
                                 <option value="reject">Reject</option>
                             </select>

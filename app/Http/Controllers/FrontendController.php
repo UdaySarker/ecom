@@ -425,8 +425,8 @@ class FrontendController extends Controller
 
     public function oldBookSale()
     {
-        $oldBooks=DB::table('old_books')
-                    ->where('status','=','approve')
+        $oldBooks=DB::table('products')
+                    ->where('admin_status','=','approve')
                     ->get();
         return view('frontend.pages.oldbook')
                     ->with('oldBooks',$oldBooks);

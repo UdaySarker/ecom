@@ -181,7 +181,7 @@
                                                         <a title="Wishlist" href="{{route('add-to-wishlist',$oldBook->slug)}}" class="wishlist" data-id="{{$oldBook->id}}"><i class=" ti-heart "></i><span>Add to Wishlist</span></a>
                                                     </div>
                                                     <div class="product-action-2">
-                                                        <a title="Add to cart" href="{{route('add-to-cart-old',$oldBook->slug)}}">Add to cart</a>
+                                                        <a title="Add to cart" href="{{route('add-to-cart',$oldBook->slug)}}">Add to cart</a>
                                                     </div>
                                                 </div>
                                             </div>

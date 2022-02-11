@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Author;
 use App\Models\Publisher;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class ProductController extends Controller
@@ -148,12 +149,13 @@ class ProductController extends Controller
             'status'=>'in:active,inactive',
             'condition'=>'in:default,new,hot,best-seller,trending',
             'price'=>'numeric|required',
-            'discount'=>'nullable|numeric'
+            'discount'=>'nullable|numeric',
         ]);
         $data=$request->all();
         $data['is_featured']=$request->input('is_featured',0);
         $pages=$request->input('pages');
         $data['pages']=$pages;
+        $data['user_id']=Auth::user()->id;
         if(empty($request->file('product_img'))){
             $data['photo']=$product->photo;
         }else{

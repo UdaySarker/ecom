@@ -42,12 +42,12 @@
                     <td>{{$user->name}}</td>
                     <td>{{number_format($oldBook->price,2)}}</td>
                     <td><img height="50px" width="50px" src="{{asset('storage/'.$oldBook->photo)}}" alt=""></td>
-                    @if($oldBook->status=='approve')
-                    <td><span class="badge badge-success">{{$oldBook->status}}</span></td>
-                    @elseif ($oldBook->status=='reject')
-                    <td><span class="badge badge-danger">{{$oldBook->status}}</span></td>
+                    @if($oldBook->admin_status=='approve')
+                    <td><span class="badge badge-success">{{$oldBook->admin_status}}</span></td>
+                    @elseif ($oldBook->admin_status=='reject')
+                    <td><span class="badge badge-danger">{{$oldBook->admin_status}}</span></td>
                     @else
-                    <td><span class="badge badge-dark">{{$oldBook->status}}</span></td>
+                    <td><span class="badge badge-dark">{{$oldBook->admin_status}}</span></td>
                     @endif
                     <td>
                         <a href="{{route("oldbooksale.show",$oldBook->id)}}" class="btn btn-warning btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="view" data-placement="bottom"><i class="fas fa-eye"></i></a>

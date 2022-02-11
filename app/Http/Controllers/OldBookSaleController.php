@@ -21,7 +21,7 @@ class OldBookSaleController extends Controller
      */
     public function index()
     {
-        $products=OldBookSaleModel::getOldBookByUser(Auth::user()->id);
+        $products=Product::getOldBookByUser(Auth::user()->id);
         $orders= [];
         return view('oldsale.index')
         ->with('orders',$orders)
@@ -53,7 +53,7 @@ class OldBookSaleController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'title'=>'required|string|min:4|unique:old_books,title',
+            'title'=>'required|string|min:4|unique:products,title',
             'summary'=>'required|string',
             'description'=>'required|string|nullable',
             'product_img'=>'image|mimes:png,jpg,jpeg',
@@ -63,7 +63,6 @@ class OldBookSaleController extends Controller
             'publisher_id'=>'nullable|exists:publishers,id',
             'author_id'=>'nullable|exists:authors,id',
             'child_cat_id'=>'nullable|exists:categories,id',
-            'status'=>'in:procsssing,approved',
             'condition'=>'in:default,new,old,hot,best-seller,trending',
             'price'=>'numeric|required',
         ]);
@@ -81,9 +80,12 @@ class OldBookSaleController extends Controller
         $data['pages']=$pages;
         $image_path=$request->file('product_img')->storeAs('oldbooks',$request->file('product_img')->getClientOriginalName());
         $data['photo']=$image_path;
+        $data['admin_status']='processing';
+        $data['discount']=0;
+        $data['is_featured']=0;
+        $data['condition']='old';
         unset($data['product_img']);
-       // return $data;
-        $status=OldBookSaleModel::create($data);
+        $status=Product::create($data);
         if($status){
             request()->session()->flash('success','Product Successfully added');
         }
@@ -102,8 +104,8 @@ class OldBookSaleController extends Controller
     public function show($id)
     {
 
-        $oldBook=OldBookSaleModel::find($id);
-        $products=OldBookSaleModel::all();
+        $oldBook=Product::find($id);
+        $products=Product::getOldBookByUser(Auth::user()->id);
         return view('oldsale.show',['oldBook'=>$oldBook,'products'=>$products]);
     }
 
@@ -157,21 +159,21 @@ class OldBookSaleController extends Controller
 
     public function oldBookSaleAdminIndex()
     {
-        $oldBooks=OldBookSaleModel::all();
+        $oldBooks=Product::getAllOldBook();
         return view('backend.oldsaleadmin.index')
         ->with('oldBooks',$oldBooks);
     }
 
     public function oldBookSaleAdminShow($id)
     {
-        $oldBook= OldBookSaleModel::find($id);
+        $oldBook= Product::find($id);
         return view('backend.oldsaleadmin.show')
         ->with('oldBook',$oldBook);
     }
     public function oldBookSaleAdminUpdateStatus(Request $request,$id)
     {
-        $oldBook= OldBookSaleModel::find($id);
-        $oldBook->status=$request->input('status');
+        $oldBook= Product::find($id);
+        $oldBook->admin_status=$request->input('admin_status');
         $status=$oldBook->save();
         if($status)
         {
