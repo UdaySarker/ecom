@@ -186,9 +186,15 @@
                                                 </div>
                                             </div>
                                             <div class="product-content">
+                                                @php
+                                                $after_discount=($oldBook->price-($oldBook->price*$oldBook->discount)/100);
+                                                @endphp
                                                 <h3><a href="{{route('product-detail',$oldBook->slug)}}">{{$oldBook->title}}</a></h3>
-                                                {{-- <span>${{number_format($after_discount,2)}}</span> --}}
-                                                <del style="padding-left:4%;">${{number_format($oldBook->price,2)}}</del>
+                                                <span>${{number_format($after_discount,2)}}</span>
+                                                @if($oldBook->discount!=0)
+                                                    <del style="padding-left:4%;">${{number_format($oldBook->price,2)}}</del>
+                                                @endif
+
                                             </div>
                                         </div>
                                     </div>
@@ -271,10 +277,10 @@
                                                     @endif
                                                 </div>
                                             </div>
-                                            {{-- @php
+                                            @php
                                                 $after_discount=($product->price-($product->price*$product->discount)/100);
-                                            @endphp --}}
-                                            {{-- <h3><small><del class="text-muted">${{number_format($product->price,2)}}</del></small>    ${{number_format($after_discount,2)}}  </h3> --}}
+                                            @endphp
+                                            <h3><small><del class="text-muted">${{number_format($product->price,2)}}</del></small>    ${{number_format($after_discount,2)}}  </h3>
                                             <div class="quickview-peragraph">
                                                 <p>{!! html_entity_decode($product->summary) !!}</p>
                                             </div>

@@ -105,12 +105,14 @@
                                                 <img src="{{asset('storage/'.$product->photo)}}" alt="{{asset('storage/'.$product->photo)}}">
                                             </div>
                                             <div class="content">
-                                                <h5><a href="{{route('product-detail',$product->slug)}}">{{$product->title}}</a></h5>
                                                 @php
-                                                    $org=($product->price-($product->price*$product->discount)/100);
+                                                $after_discount=($product->price-($product->price*$product->discount)/100);
                                                 @endphp
-                                                <p class="price"><del class="text-muted">${{number_format($product->price,2)}}</del>   ${{number_format($org,2)}}  </p>
-
+                                                <h3><a href="{{route('product-detail',$product->slug)}}">{{$product->title}}</a></h3>
+                                                <span>${{number_format($after_discount,2)}}</span>
+                                                @if($product->discount!=0)
+                                                    <del style="padding-left:4%;">${{number_format($product->price,2)}}</del>
+                                                @endif
                                             </div>
                                         </div>
                                         <!-- End Single Post -->
