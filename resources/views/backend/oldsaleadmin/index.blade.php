@@ -22,6 +22,7 @@
               <th>Publishers</th>
               <th>Uploaded By</th>
               <th>Price</th>
+              <th>Quantity</th>
               <th>Thumbnail</th>
               <th>Status</th>
               <th>Action</th>
@@ -41,6 +42,7 @@
                     <td>{{$publisher->title}}</td>
                     <td>{{$user->name}}</td>
                     <td>{{number_format($oldBook->price,2)}}</td>
+                    <td class="text-center">{{$oldBook->stock}}</td>
                     <td><img height="50px" width="50px" src="{{asset('storage/'.$oldBook->photo)}}" alt=""></td>
                     @if($oldBook->admin_status=='approve')
                     <td><span class="badge badge-success">{{$oldBook->admin_status}}</span></td>

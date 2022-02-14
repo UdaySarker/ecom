@@ -143,4 +143,10 @@ class UsersController extends Controller
         }
         return redirect()->route('users.index');
     }
+    public function incomeFromBookSale()
+    {
+        $expenseData=DB::table('user_wallet')->where('book_owner_id','=',Auth()->user()->id)->get();
+        return view('user.userincome')
+        ->with('data',$expenseData);
+    }
 }

@@ -7,6 +7,7 @@ use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Shipping;
 use App\User;
+use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\PDF;
 use Illuminate\Support\Facades\Notification;;
 use Helper;
@@ -198,9 +199,15 @@ class OrderController extends Controller
         if($request->status=='delivered'){
             foreach($order->cart as $cart){
                 $product=$cart->product;
-                // return $product;
                 $product->stock -=$cart->quantity;
                 $product->save();
+                if($product->condition="old" && $product->slug==$cart->product->slug){
+                    $data_wallet['order_id']=$order->order_number;
+                    $data_wallet['book_owner_id']=$product->user_id;
+                    $data_wallet['dt_amt']=0;
+                    $data_wallet['ct_amt']=$product->price;
+                    DB::table('user_wallet')->insert($data_wallet);
+                }
             }
         }
         $status=$order->fill($data)->save();

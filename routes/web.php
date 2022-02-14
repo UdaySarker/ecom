@@ -174,6 +174,7 @@ Route::group(['prefix'=>'/user','middleware'=>['user']],function(){
 
     //old book
     Route::resource('/oldsale','OldBookSaleController');
+    Route::get('/userexpense','UsersController@incomeFromBookSale')->name('userincome');
     // SSLCOMMERZ Start
     Route::get('example1', [SslCommerzPaymentController::class, 'exampleEasyCheckout']);
     Route::get('example2', [SslCommerzPaymentController::class, 'exampleHostedCheckout']);

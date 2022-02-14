@@ -23,6 +23,7 @@
               <th>Publisher</th>
               <th>Price</th>
               <th>Status</th>
+              <th>Quantity</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -34,6 +35,7 @@
                 <th>Publisher</th>
                 <th>Price</th>
                 <th>Status</th>
+                <th>Quantity</th>
                 <th>Action</th>
               </tr>
           </tfoot>
@@ -56,6 +58,7 @@
                     @else
                     <td><span class="badge badge-dark">{{$product->admin_status}}</span></td>
                     @endif
+                    <td class="text-center">{{$product->stock}}</td>
                     <td>
                         <a href="{{route('oldsale.show',$product->id)}}" class="btn btn-warning btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="view" data-placement="bottom"><i class="fas fa-eye"></i></a>
                         <form method="POST" action="{{route('oldsale.destroy',[$product->id])}}">

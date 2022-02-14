@@ -76,6 +76,25 @@
                         <td>Quantity</td>
                         <td>{{$order->quantity}}</td>
                     </tr>
+                    @php
+                        $purchased_products=DB::table('carts')->where('order_id','=',$order->id)->get();
+                    @endphp
+                    <tr>
+                        <td>Items: </td>
+                        @foreach ($purchased_products as $purchased_product)
+                            @php
+                            $product= DB::table('products')->find($purchased_product->product_id);
+                            @endphp
+                            <tr>
+                                <td>
+                                    #{{$product->title}}
+                                </td>
+                            </tr>
+                        @endforeach
+                        <td>
+
+                        </td>
+                    </tr>
                     <tr>
                         <td>Order Status</td>
                         <td>{{$order->status}}</td>
