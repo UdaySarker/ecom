@@ -121,14 +121,6 @@ class OrderController extends Controller
         }
         // return $order_data['total_amount'];
         $order_data['status']="new";
-        // if(request('payment_method')=='paypal'){
-        //     $order_data['payment_method']='paypal';
-        //     $order_data['payment_status']='paid';
-        // }
-        // else{
-        //     $order_data['payment_method']='cod';
-        //     $order_data['payment_status']='Unpaid';
-        // }
         $order_data['payment_method']=$request->input('payment_method');
         $order->fill($order_data);
         //return $order_data;
@@ -142,8 +134,8 @@ class OrderController extends Controller
             'fas'=>'fa-file-alt'
         ];
         Notification::send($users, new StatusNotification($details));
-        if(request('payment_method')=='paypal'){
-            return redirect()->route('payment')->with(['id'=>$order->id]);
+        if(request('payment_method')=='cod'){
+            return redirect()->route('user.order.index');
         }
         else{
             session()->forget('cart');
@@ -191,33 +183,39 @@ class OrderController extends Controller
     public function update(Request $request, $id)
     {
         $order=Order::find($id);
-        $this->validate($request,[
-            'status'=>'required|in:new,process,delivered,cancel'
-        ]);
-        $data=$request->all();
-        // return $request->status;
-        if($request->status=='delivered'){
-            foreach($order->cart as $cart){
-                $product=$cart->product;
-                $product->stock -=$cart->quantity;
-                $product->save();
-                if($product->condition="old" && $product->slug==$cart->product->slug){
-                    $data_wallet['order_id']=$order->order_number;
-                    $data_wallet['book_owner_id']=$product->user_id;
-                    $data_wallet['dt_amt']=0;
-                    $data_wallet['ct_amt']=$product->price;
-                    DB::table('user_wallet')->insert($data_wallet);
+        if($order->payment_status=="unpaid")
+        {
+            request()->session()->flash('error','Order is still unpaid');
+            return redirect()->route('order.index');
+        }else{
+            $this->validate($request,[
+                'status'=>'required|in:new,process,delivered,cancel'
+            ]);
+            $data=$request->all();
+            // return $request->status;
+            if($request->status=='delivered'){
+                foreach($order->cart as $cart){
+                    $product=$cart->product;
+                    $product->stock -=$cart->quantity;
+                    $product->save();
+                    if($product->condition="old" && $product->slug==$cart->product->slug){
+                        $data_wallet['order_id']=$order->order_number;
+                        $data_wallet['book_owner_id']=$product->user_id;
+                        $data_wallet['dt_amt']=0;
+                        $data_wallet['ct_amt']=$product->price;
+                        DB::table('user_wallet')->insert($data_wallet);
+                    }
                 }
             }
+            $status=$order->fill($data)->save();
+            if($status){
+                request()->session()->flash('success','Successfully updated order');
+            }
+            else{
+                request()->session()->flash('error','Error while updating order');
+            }
+            return redirect()->route('order.index');
         }
-        $status=$order->fill($data)->save();
-        if($status){
-            request()->session()->flash('success','Successfully updated order');
-        }
-        else{
-            request()->session()->flash('error','Error while updating order');
-        }
-        return redirect()->route('order.index');
     }
 
     /**

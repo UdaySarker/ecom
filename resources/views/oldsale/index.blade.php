@@ -24,6 +24,7 @@
               <th>Price</th>
               <th>Status</th>
               <th>Quantity</th>
+              <th>Current Stock</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -36,6 +37,7 @@
                 <th>Price</th>
                 <th>Status</th>
                 <th>Quantity</th>
+                <th>Current Stock</th>
                 <th>Action</th>
               </tr>
           </tfoot>
@@ -47,6 +49,7 @@
                     @php
                         $author=DB::table('authors')->find($product->author_id);
                         $publisher=DB::table('publishers')->find($product->publisher_id);
+                        $soldBook=DB::table('carts')->where('product_id',"=",$product->id)->get();
                     @endphp
                     <td>{{$author->name}}</td>
                     <td>{{$publisher->title}}</td>
@@ -59,13 +62,16 @@
                     <td><span class="badge badge-dark">{{$product->admin_status}}</span></td>
                     @endif
                     <td class="text-center">{{$product->stock}}</td>
+                    <td class="text-center">{{$product->stock-count($soldBook)}}</td>
                     <td>
                         <a href="{{route('oldsale.show',$product->id)}}" class="btn btn-warning btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="view" data-placement="bottom"><i class="fas fa-eye"></i></a>
+                        @if($product->admin_status!="approve")
                         <form method="POST" action="{{route('oldsale.destroy',[$product->id])}}">
                           @csrf
                           @method('delete')
                               <button class="btn btn-danger btn-sm dltBtn" data-id={{$product->id}} style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>
                         </form>
+                        @endif
                     </td>
                 </tr>
             @endforeach

@@ -98,7 +98,12 @@
                     </tr>
                     <tr>
                         <td>Payment Method</td>
-                        <td> : @if($order->payment_method=='cod') Cash on Delivery @else Paypal @endif</td>
+
+                            @if($order->payment_method=="cod")
+                            <td>Cash On Delivery</td>
+                            @elseif ($order->payment_method=="ibmb")
+                            <td>Internet/Mobile Banking</td>
+                            @endif
                     </tr>
                     <tr>
                         <td>Payment Status</td>

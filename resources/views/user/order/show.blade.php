@@ -16,7 +16,7 @@
             <th>Name</th>
             <th>Email</th>
             <th>Quantity</th>
-            <th>Charge</th>
+            <th>Shipping Charge</th>
             <th>Total Amount</th>
             <th>Status</th>
             <th>Action</th>
@@ -46,11 +46,13 @@
                 @endif
             </td>
             <td>
+                @if($order->payment_status != "paid")
                 <form method="POST" action="{{route('order.destroy',[$order->id])}}">
                   @csrf
                   @method('delete')
                       <button class="btn btn-danger btn-sm dltBtn" data-id={{$order->id}} style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>
                 </form>
+                @endif
             </td>
 
         </tr>
@@ -84,12 +86,11 @@
                         @foreach ($purchased_products as $purchased_product)
                             @php
                             $product= DB::table('products')->find($purchased_product->product_id);
+                            $author= DB::table('authors')->where('id','=',$product->author_id)->first();
                             @endphp
-                            <tr>
                                 <td>
-                                    #{{$product->title}}
+                                    <span>{{$product->title}} by {{$author->name}}</span>
                                 </td>
-                            </tr>
                         @endforeach
                         <td>
 

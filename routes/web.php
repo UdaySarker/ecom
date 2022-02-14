@@ -97,7 +97,7 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
     Route::resource('users','UsersController');
     // Banner
     Route::resource('banner','BannerController');
-    // Brand
+    // Publisher
     Route::resource('publisher','PublisherController');
     //Author
     Route::resource('author','AuthorController');
