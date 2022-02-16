@@ -1,24 +1,58 @@
 @extends('user.layouts.master')
 
 @section('main-content')
-    <div class="row">
+<h4>Purchase and Sell History</h4>
+<hr>
+<div class="row" style="padding: 20px">
         <div class="col">
-            <table class="table table-striped">
+            <table class="table">
                 <thead>
                     <tr>
-                        <th scope="col">Debit Amount</th>
-                        <th scope="col">Credit Amount</th>
+                        <th scope="col">Purchase Date</th>
+                        <th scope="col">Purchase Amount</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($data as $d)
+                    @foreach($userpurchases as $userpurchase)
                         <tr>
-                            <td>{{$d->dt_amt}}</td>
-                            <td>{{$d->ct_amt}}</td>
+                            <td>{{$userpurchase->created_at->format('d M, Y')}}</td>
+                            <td>{{$userpurchase->total_amount}}</td>
+                            <td></td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
         </div>
+        <div class="col">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Sell Date</th>
+                        <th scope="col">Sell Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($data as $usersell)
+                        <tr>
+                            <td>
+                                @php
+                                    echo date($usersell->selldate);
+                                @endphp
+                            </td>
+                            <td>{{$usersell->ct_amt}}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>Balance</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
     </div>
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+    </div>
+
 @endsection

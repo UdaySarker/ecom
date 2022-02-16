@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\MessageSent;
 use Illuminate\Http\Request;
 use App\Models\Cart;
+use App\Models\Message;
 use App\Models\Order;
 use App\Models\Shipping;
 use App\User;
@@ -203,6 +205,7 @@ class OrderController extends Controller
                         $data_wallet['book_owner_id']=$product->user_id;
                         $data_wallet['dt_amt']=0;
                         $data_wallet['ct_amt']=$product->price;
+                        $data_wallet['selldate']=$order->created_at;
                         DB::table('user_wallet')->insert($data_wallet);
                     }
                 }

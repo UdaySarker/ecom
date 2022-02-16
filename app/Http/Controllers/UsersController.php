@@ -1,10 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\Order;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\User;
+use Illuminate\Support\Facades\Auth;
+
 class UsersController extends Controller
 {
     /**
@@ -145,8 +149,11 @@ class UsersController extends Controller
     }
     public function incomeFromBookSale()
     {
+        $userPurchases=Order::where('user_id',Auth()->user()->id)->get();
+
         $expenseData=DB::table('user_wallet')->where('book_owner_id','=',Auth()->user()->id)->get();
         return view('user.userincome')
-        ->with('data',$expenseData);
+        ->with('data',$expenseData)
+        ->with('userpurchases',$userPurchases);
     }
 }
