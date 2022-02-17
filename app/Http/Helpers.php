@@ -8,6 +8,7 @@ use App\Models\Wishlist;
 use App\Models\Shipping;
 use App\Models\Cart;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 class Helper{
     public static function messageList()
     {
@@ -172,6 +173,10 @@ class Helper{
 
     public static function shipping(){
         return Shipping::orderBy('id','DESC')->get();
+    }
+    public static function sumOfCreditByUser(){
+        $data=DB::table('user_wallet')->where('book_owner_id','=',Auth::user()->id)->sum('ct_amt');
+        return $data;
     }
 }
 
