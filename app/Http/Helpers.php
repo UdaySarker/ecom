@@ -174,9 +174,11 @@ class Helper{
     public static function shipping(){
         return Shipping::orderBy('id','DESC')->get();
     }
-    public static function sumOfCreditByUser(){
-        $data=DB::table('user_wallet')->where('book_owner_id','=',Auth::user()->id)->sum('ct_amt');
-        return $data;
+    public static function userCreditAmount(){
+        $ct_amt=DB::table('user_wallet')->select('ct_amt')->where('book_owner_id','=',Auth::user()->id)->sum('ct_amt');
+        $dt_amt=DB::table('user_wallet')->select('dt_amt')->where('book_owner_id','=',Auth::user()->id)->sum('dt_amt');
+        $credit_amount=$ct_amt-$dt_amt;
+        return $credit_amount;
     }
 }
 

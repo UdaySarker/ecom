@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Notification;;
 use Helper;
 use Illuminate\Support\Str;
 use App\Notifications\StatusNotification;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
@@ -121,7 +122,13 @@ class OrderController extends Controller
                 $order_data['total_amount']=Helper::totalCartPrice();
             }
         }
-        // return $order_data['total_amount'];
+        if($request->payment_method=="credit"){
+            if(Helper::userCreditAmount()<$order_data['total_amount']){
+                request()->session()->flash('error','Available balance is not sufficient!');
+                return back()->withInput($request['input']);
+            }
+        }
+
         $order_data['status']="new";
         $order_data['payment_method']=$request->input('payment_method');
         $order->fill($order_data);
@@ -206,13 +213,27 @@ class OrderController extends Controller
                         $data_wallet['dt_amt']=0;
                         $data_wallet['ct_amt']=$product->price;
                         $data_wallet['selldate']=$order->created_at;
-                        DB::table('user_wallet')->insert($data_wallet);
+                       // $credit_balance['user_id']=$product->user_id;
+                       // $credit_balance['credit_amt']= DB::table('user_wallet')->where('book_owner_id','=',$product->user_id)->sum('ct_amt');
+                        // $data_wallet['credit_balance']=$credit_balance+$product->price;
+
+                       // DB::table('credit_balance')->insert($credit_balance);
                     }
+                }
+                if($order->payment_method=='credit')
+                {
+                    $data_wallet['order_id']=$order->order_number;
+                    $data_wallet['book_owner_id']=$order->user_id;
+                    $data_wallet['dt_amt']=$order->sub_total;
+                    $data_wallet['ct_amt']=0;
+                    $data_wallet['selldate']=$order->created_at;
+                    DB::table('user_wallet')->insert($data_wallet);
                 }
             }
             $status=$order->fill($data)->save();
             if($status){
                 request()->session()->flash('success','Successfully updated order');
+
             }
             else{
                 request()->session()->flash('error','Error while updating order');
