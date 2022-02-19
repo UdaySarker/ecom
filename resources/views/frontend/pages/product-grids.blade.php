@@ -83,13 +83,13 @@
                                         </div>
                                         {{-- <ul class="check-box-list">
                                             <li>
-                                                <label class="checkbox-inline" for="1"><input name="news" id="1" type="checkbox">$20 - $50<span class="count">(3)</span></label>
+                                                <label class="checkbox-inline" for="1"><input name="news" id="1" type="checkbox">৳20 - ৳50<span class="count">(3)</span></label>
                                             </li>
                                             <li>
-                                                <label class="checkbox-inline" for="2"><input name="news" id="2" type="checkbox">$50 - $100<span class="count">(5)</span></label>
+                                                <label class="checkbox-inline" for="2"><input name="news" id="2" type="checkbox">৳50 - ৳100<span class="count">(5)</span></label>
                                             </li>
                                             <li>
-                                                <label class="checkbox-inline" for="3"><input name="news" id="3" type="checkbox">$100 - $250<span class="count">(8)</span></label>
+                                                <label class="checkbox-inline" for="3"><input name="news" id="3" type="checkbox">৳100 - ৳250<span class="count">(8)</span></label>
                                             </li>
                                         </ul> --}}
                                     </div>
@@ -109,9 +109,9 @@
                                                 $after_discount=($product->price-($product->price*$product->discount)/100);
                                                 @endphp
                                                 <h3><a href="{{route('product-detail',$product->slug)}}">{{$product->title}}</a></h3>
-                                                <span>${{number_format($after_discount,2)}}</span>
+                                                <span>৳{{number_format($after_discount,2)}}</span>
                                                 @if($product->discount!=0)
-                                                    <del style="padding-left:4%;">${{number_format($product->price,2)}}</del>
+                                                    <del style="padding-left:4%;">৳{{number_format($product->price,2)}}</del>
                                                 @endif
                                             </div>
                                         </div>
@@ -198,8 +198,8 @@
                                                 @php
                                                     $after_discount=($product->price-($product->price*$product->discount)/100);
                                                 @endphp
-                                                <span>${{number_format($after_discount,2)}}</span>
-                                                <del style="padding-left:4%;">${{number_format($product->price,2)}}</del>
+                                                <span>৳{{number_format($after_discount,2)}}</span>
+                                                <del style="padding-left:4%;">৳{{number_format($product->price,2)}}</del>
                                             </div>
                                         </div>
                                     </div>
@@ -285,7 +285,7 @@
                                             @php
                                                 $after_discount=($product->price-($product->price*$product->discount)/100);
                                             @endphp
-                                            <h3><small><del class="text-muted">${{number_format($product->price,2)}}</del></small>    ${{number_format($after_discount,2)}}  </h3>
+                                            <h3><small><del class="text-muted">৳{{number_format($product->price,2)}}</del></small>    ৳{{number_format($after_discount,2)}}  </h3>
                                             <div class="quickview-peragraph">
                                                 <p>{!! html_entity_decode($product->summary) !!}</p>
                                             </div>
