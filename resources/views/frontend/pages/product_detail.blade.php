@@ -78,7 +78,7 @@
                                                 @php
                                                     $after_discount=($product_detail->price-(($product_detail->price*$product_detail->discount)/100));
                                                 @endphp
-												<p class="price"><span class="discount">${{number_format($after_discount,2)}}</span><s>${{number_format($product_detail->price,2)}}</s> </p>
+												<p class="price"><span class="discount">৳{{number_format($after_discount,2)}}</span><s>৳{{number_format($product_detail->price,2)}}</s> </p>
 												<p class="description">{!!($product_detail->summary)!!}</p>
 											</div>
 											<!--/ End Description -->
@@ -338,8 +338,8 @@
                                             @php
                                                 $after_discount=($data->price-(($data->discount*$data->price)/100));
                                             @endphp
-                                            <span class="old">${{number_format($data->price,2)}}</span>
-                                            <span>${{number_format($after_discount,2)}}</span>
+                                            <span class="old">৳{{number_format($data->price,2)}}</span>
+                                            <span>৳{{number_format($after_discount,2)}}</span>
                                         </div>
 
                                     </div>
@@ -416,7 +416,7 @@
                             @php
                             $after_discount=($product_detail->price-($product_detail->price*$product_detail->discount)/100);
                         @endphp
-                        <h3><small><del class="text-muted">${{number_format($product_detail->price,2)}}</del></small>    ${{number_format($after_discount,2)}}  </h3>
+                        <h3><small><del class="text-muted">৳{{number_format($product_detail->price,2)}}</del></small>    ৳{{number_format($after_discount,2)}}  </h3>
                             <div class="quickview-peragraph">
                                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia iste laborum ad impedit pariatur esse optio tempora sint ullam autem deleniti nam in quos qui nemo ipsum numquam.</p>
                             </div>
