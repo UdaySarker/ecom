@@ -591,7 +591,7 @@
 
         #Gslider .carousel-inner .carousel-caption p {
         font-size: 18px;
-        color: black;
+        color: #fff;
         margin: 28px 0 28px 0;
         }
 
