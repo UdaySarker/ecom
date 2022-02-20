@@ -1557,7 +1557,7 @@ Version:1.0
 	font-size: 22px;
 	font-weight: 700;
 	text-transform: capitalize;
-	color: #333;
+	color: #F7941D;
 }
 .small-banner .single-banner h3 span{
 	color:#F7941D;
@@ -1570,14 +1570,14 @@ Version:1.0
 	text-transform: capitalize;
 }
 .small-banner .single-banner a {
-	color: #333;
+	color: #fff;
 	margin-top: 22px;
 	display: block;
 	font-size: 12px;
 	font-weight:500;
 	display: inline-block;
 	text-transform:uppercase;
-	border-bottom:2px solid #333;
+	border-bottom:2px solid #fff;
 }
 .small-banner .single-banner a:hover{
 	color:#F7941D;
@@ -1618,11 +1618,11 @@ Version:1.0
 	line-height: 30px;
 }
 .midium-banner .single-banner h3 span{
-	color:#F7941D;
+	color:crimson;
 }
 .midium-banner .single-banner p {
 	font-size: 13px;
-	color: #F7941D;
+	color: crimson;
 	font-weight: 500;
 	margin-bottom: 5px;
 	text-transform: uppercase;
