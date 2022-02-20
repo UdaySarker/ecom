@@ -406,8 +406,8 @@
                                             <form-group>
                                                 <input name="payment_method"  type="radio" value="cod"> <label> Cash On Delivery</label><br>
                                                 <input type="radio" name="payment_method" value="ibmb"><label>Internet/Mobile Banking</label><br>
-                                                <input type="radio" name="payment_method" id="" value="Available Credit"><label>Available credit</label>
-                                                {{Helper::sumOfCreditByUser()}}
+                                                <input type="radio" name="payment_method" id="" value="credit"><label>Available credit</label>
+                                                {{Helper::userCreditAmount()}}
                                             </form-group>
 
                                         </div>

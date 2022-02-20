@@ -21,6 +21,17 @@
                         </tr>
                     @endforeach
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <td>Total Purchase</td>
+                        @php
+                           $total_purchase = DB::table('orders')->where('user_id','=',Auth::user()->id)->sum('total_amount');
+                        @endphp
+                        <td>
+                            {{$total_purchase}}
+                        </td>
+                    </tr>
+                </tfoot>
             </table>
         </div>
         <div class="col">
@@ -46,6 +57,7 @@
                 <tfoot>
                     <tr>
                         <td>Balance</td>
+                        <td>{{Helper::userCreditAmount()}}</td>
                     </tr>
                 </tfoot>
             </table>

@@ -81,6 +81,7 @@ class ProductController extends Controller
         $data['pages']=$pages;
         $image_path=$request->file('product_img')->storeAs('products_image',$request->file('product_img')->getClientOriginalName());
         $data['photo']=$image_path;
+        $data['user_id']=Auth::user()->id;
         unset($data['product_img']);
         $status=Product::create($data);
         if($status){

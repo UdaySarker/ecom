@@ -130,7 +130,11 @@ class OrderController extends Controller
         }
 
         $order_data['status']="new";
-        $order_data['payment_method']=$request->input('payment_method');
+        if($request->payment_method=='credit'){
+            $order_data['payment_method']='paid';
+        }else{
+            $order_data['payment_method']=$request->input('payment_method');
+        }
         $order->fill($order_data);
         //return $order_data;
         $status=$order->save();
@@ -213,11 +217,13 @@ class OrderController extends Controller
                         $data_wallet['dt_amt']=0;
                         $data_wallet['ct_amt']=$product->price;
                         $data_wallet['selldate']=$order->created_at;
-                       // $credit_balance['user_id']=$product->user_id;
-                       // $credit_balance['credit_amt']= DB::table('user_wallet')->where('book_owner_id','=',$product->user_id)->sum('ct_amt');
-                        // $data_wallet['credit_balance']=$credit_balance+$product->price;
 
-                       // DB::table('credit_balance')->insert($credit_balance);
+                       // $data_wallet['credit_balance']=$credit_balance+$product->price;
+                       if(DB::table('user_wallet')->insert($data_wallet)){
+                        $credit_balance['user_id']=$product->user_id;
+                        $credit_balance['credit_amt']= DB::table('user_wallet')->where('book_owner_id','=',$product->user_id)->sum('ct_amt');
+                        DB::table('credit_balance')->insert($credit_balance);
+                       }
                     }
                 }
                 if($order->payment_method=='credit')
@@ -227,7 +233,13 @@ class OrderController extends Controller
                     $data_wallet['dt_amt']=$order->sub_total;
                     $data_wallet['ct_amt']=0;
                     $data_wallet['selldate']=$order->created_at;
-                    DB::table('user_wallet')->insert($data_wallet);
+
+                    if(DB::table('user_wallet')->insert($data_wallet))
+                    {
+                        $credit_balance['user_id']=$order->user_id;
+                        $credit_balance['credit_amt']= -$order->sub_total;
+                        DB::table('credit_balance')->insert($credit_balance);
+                    }
                 }
             }
             $status=$order->fill($data)->save();

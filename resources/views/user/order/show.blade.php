@@ -114,10 +114,12 @@
                     <tr>
                       <td>Payment Method</td>
                       <td>
-                          @if ($order->payment_method == 'ibmb')
-                            <span>Internet/Mobile Banking</span>
-                          @else
-                            <span>Cash On Delivery</span>
+                            @if ($order->payment_method == 'ibmb')
+                                <span>Internet/Mobile Banking</span>
+                            @elseif ($order->payment_method=='cod')
+                                <span>Cash On Delivery</span>
+                            @else
+                                <span>Credit Purchase</span>
                           @endif
                       </td>
                     </tr>

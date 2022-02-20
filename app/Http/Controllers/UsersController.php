@@ -151,7 +151,7 @@ class UsersController extends Controller
     {
         $userPurchases=Order::where('user_id',Auth()->user()->id)->get();
 
-        $expenseData=DB::table('user_wallet')->where('book_owner_id','=',Auth()->user()->id)->get();
+        $expenseData=DB::table('user_wallet')->where('book_owner_id','=',Auth()->user()->id)->where('ct_amt','>',0)->get();
         return view('user.userincome')
         ->with('data',$expenseData)
         ->with('userpurchases',$userPurchases);
