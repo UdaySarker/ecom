@@ -109,9 +109,10 @@
                                                 $after_discount=($product->price-($product->price*$product->discount)/100);
                                                 @endphp
                                                 <h3><a href="{{route('product-detail',$product->slug)}}">{{$product->title}}</a></h3>
-                                                <span>৳{{number_format($after_discount,2)}}</span>
                                                 @if($product->discount!=0)
                                                     <del style="padding-left:4%;">৳{{number_format($product->price,2)}}</del>
+                                                @else
+                                                    <span>৳{{number_format($product->price,2)}}</span>
                                                 @endif
                                             </div>
                                         </div>
@@ -198,8 +199,12 @@
                                                 @php
                                                     $after_discount=($product->price-($product->price*$product->discount)/100);
                                                 @endphp
+                                                @if($product->discount!=0)
                                                 <span>৳{{number_format($after_discount,2)}}</span>
                                                 <del style="padding-left:4%;">৳{{number_format($product->price,2)}}</del>
+                                                @else
+                                                <span>৳{{number_format($product->price,2)}}</span>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>

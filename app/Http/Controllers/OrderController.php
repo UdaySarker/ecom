@@ -11,7 +11,7 @@ use App\Models\Shipping;
 use App\User;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\PDF;
-use Illuminate\Support\Facades\Notification;;
+use Illuminate\Support\Facades\Notification;
 use Helper;
 use Illuminate\Support\Str;
 use App\Notifications\StatusNotification;

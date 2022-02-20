@@ -116,7 +116,11 @@
                                                 @php
                                                     $org=($product->price-($product->price*$product->discount)/100);
                                                 @endphp
+                                                @if($product->discount!=0)
                                                 <p class="price"><del class="text-muted">৳{{number_format($product->price,2)}}</del>   ৳{{number_format($org,2)}}  </p>
+                                                @else
+                                                <p class="price">৳{{number_format($product->price,2)}}</p>
+                                                @endif
                                             </div>
                                         </div>
                                         <!-- End Single Post -->
@@ -206,8 +210,12 @@
 																@php
 																	$after_discount=($product->price-($product->price*$product->discount)/100);
 																@endphp
-																<span>${{number_format($after_discount,2)}}</span>
-																<del>${{number_format($product->price,2)}}</del>
+                                                                @if($product->discount!=0)
+																<span>BDT{{number_format($after_discount,2)}}</span>
+																<del>BDT{{number_format($product->price,2)}}</del>
+                                                                @else
+                                                                <span>BDT{{number_format($product->price)}}</span>
+                                                                @endif
 															</div>
 															<h3 class="title"><a href="{{route('product-detail',$product->slug)}}">{{$product->title}}</a></h3>
 														{{-- <p>{!! html_entity_decode($product->summary) !!}</p> --}}

@@ -41,7 +41,7 @@
                     <td>{{$author->name}}</td>
                     <td>{{$publisher->title}}</td>
                     <td>{{$user->name}}</td>
-                    <td>{{number_format($oldBook->price,2)}}</td>
+                    <td>BDT{{number_format($oldBook->price,2)}}</td>
                     <td class="text-center">{{$oldBook->stock}}</td>
                     <td><img height="50px" width="50px" src="{{asset('storage/'.$oldBook->photo)}}" alt=""></td>
                     @if($oldBook->admin_status=='approve')

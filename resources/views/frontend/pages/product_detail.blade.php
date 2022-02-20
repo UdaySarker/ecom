@@ -78,7 +78,11 @@
                                                 @php
                                                     $after_discount=($product_detail->price-(($product_detail->price*$product_detail->discount)/100));
                                                 @endphp
-												<p class="price"><span class="discount">৳{{number_format($after_discount,2)}}</span><s>৳{{number_format($product_detail->price,2)}}</s> </p>
+                                                @if($product_detail->discount !=0)
+                                                    <p class="price"><span class="discount">৳{{number_format($after_discount,2)}}</span><s>৳{{number_format($product_detail->price,2)}}</s> </p>
+												@else
+                                                    <p class="price">৳{{$product_detail->price}}</p>
+                                                @endif
 												<p class="description">{!!($product_detail->summary)!!}</p>
 											</div>
 											<!--/ End Description -->
@@ -338,8 +342,12 @@
                                             @php
                                                 $after_discount=($data->price-(($data->discount*$data->price)/100));
                                             @endphp
+                                            @if($data->discount!=0)
                                             <span class="old">৳{{number_format($data->price,2)}}</span>
                                             <span>৳{{number_format($after_discount,2)}}</span>
+                                            @else
+                                            <span>৳{{number_format($data->price,2)}}</span>
+                                            @endif
                                         </div>
 
                                     </div>
