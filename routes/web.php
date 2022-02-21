@@ -43,7 +43,7 @@ Route::get('/product-cat/{slug}','FrontendController@productCat')->name('product
 Route::get('/product-sub-cat/{slug}/{sub_slug}','FrontendController@productSubCat')->name('product-sub-cat');
 Route::get('/product-brand/{slug}','FrontendController@productBrand')->name('product-brand');
 // Cart section
-Route::get('/add-to-cart/{slug}','CartController@addToCart')->name('add-to-cart')->middleware('auth');
+Route::get('/add-to-cart/{slug}','CartController@addToCart')->name('add-to-cart')->middleware(['auth','verified']);
 Route::get('/add-to-cart-old/{slug}','CartController@addToCartOld')->name('add-to-cart-old')->middleware(['auth','verified']);
 Route::post('/add-to-cart','CartController@singleAddToCart')->name('single-add-to-cart')->middleware('auth');
 Route::get('cart-delete/{id}','CartController@cartDelete')->name('cart-delete');

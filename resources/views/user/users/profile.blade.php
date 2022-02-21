@@ -23,7 +23,7 @@
                 <div class="card">
                     <div class="image">
                         @if($profile->photo)
-                        <img class="card-img-top img-fluid roundend-circle mt-4" style="border-radius:50%;height:80px;width:80px;margin:auto;" src="{{$profile->photo}}" alt="profile picture">
+                        <img class="card-img-top img-fluid roundend-circle mt-4" style="border-radius:50%;height:80px;width:80px;margin:auto;" src="{{asset('storage/'.$profile->photo)}}" alt="profile picture">
                         @else
                         <img class="card-img-top img-fluid roundend-circle mt-4" style="border-radius:50%;height:80px;width:80px;margin:auto;" src="{{asset('backend/img/avatar.png')}}" alt="profile picture">
                         @endif
@@ -36,7 +36,7 @@
                   </div>
             </div>
             <div class="col-md-8">
-                <form class="border px-4 pt-2 pb-3" method="POST" action="{{route('user-profile-update',$profile->id)}}">
+                <form class="border px-4 pt-2 pb-3" method="POST" action="{{route('user-profile-update',$profile->id)}}" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
                         <label for="inputTitle" class="col-form-label">Name</label>
@@ -56,25 +56,14 @@
 
                       <div class="form-group">
                       <label for="inputPhoto" class="col-form-label">Photo</label>
-                      <div class="input-group">
-                          <span class="input-group-btn">
-                              <a id="lfm" data-input="thumbnail" data-preview="holder" class="btn btn-primary">
-                              <i class="fa fa-picture-o"></i> Choose
-                              </a>
-                          </span>
-                          <input id="thumbnail" class="form-control" type="text" name="photo" value="{{$profile->photo}}">
-                      </div>
+                        <input type="file" name="photo" class="form-control">
                         @error('photo')
                         <span class="text-danger">{{$message}}</span>
                         @enderror
                       </div>
                       <div class="form-group">
                           <label for="role" class="col-form-label">Role</label>
-                          <select name="role" class="form-control">
-                              <option value="">-----Select Role-----</option>
-                                  <option value="admin" {{(($profile->role=='admin')? 'selected' : '')}}>Admin</option>
-                                  <option value="user" {{(($profile->role=='user')? 'selected' : '')}}>User</option>
-                          </select>
+                        <input type="text" disabled class="form-control" value="{{$profile->role}}">
                         @error('role')
                         <span class="text-danger">{{$message}}</span>
                         @enderror

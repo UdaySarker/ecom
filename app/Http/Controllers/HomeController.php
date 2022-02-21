@@ -40,9 +40,17 @@ class HomeController extends Controller
     }
 
     public function profileUpdate(Request $request,$id){
-        // return $request->all();
-        $user=User::findOrFail($id);
-        $data=$request->all();
+         //return $request->file('photo');
+         $user=User::findOrFail($id);
+         $data=$request->all();
+         if(empty($request->file('photo')))
+         {
+             $data['photo']=$user->photo;
+         }else{
+             $image_path=$request->file('photo')->storeAs('users_image',$request->file('photo')->getClientOriginalName());
+             $data['photo']=$image_path;
+            //  unset($data['photo']);
+         }
         $status=$user->fill($data)->save();
         if($status){
             request()->session()->flash('success','Successfully updated your profile');
