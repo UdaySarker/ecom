@@ -26,7 +26,7 @@
 							<ul>
 								<li><a href="{{route('about-us')}}">About Us</a></li>
 								<li><a href="#">Faq</a></li>
-								<li><a href="#">Terms & Conditions</a></li>
+								<li><a href="{{route('terms')}}">Terms & Conditions</a></li>
 								<li><a href="{{route('contact')}}">Contact Us</a></li>
 								<li><a href="#">Help</a></li>
 							</ul>
@@ -78,7 +78,7 @@
 						</div>
 						<div class="col-lg-6 col-12">
 							<div class="right">
-								<img src="{{asset('backend/img/payments.png')}}" alt="#">
+								<img src="{{asset('backend/img/payment-method.png')}}" alt="#" style="height:35px">
 							</div>
 						</div>
 					</div>

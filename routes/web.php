@@ -13,16 +13,17 @@ use App\Http\Controllers\SslCommerzPaymentController;
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
-*/
-
-Auth::routes(['register'=>false]);
+// */
+// Auth::routes();
+Auth::routes(['register'=>true]);
+Auth::routes(['verify'=>true]);
 
 Route::get('user/login','FrontendController@login')->name('login.form');
 Route::post('user/login','FrontendController@loginSubmit')->name('login.submit');
 Route::get('user/logout','FrontendController@logout')->name('user.logout');
 
 Route::get('user/register','FrontendController@register')->name('register.form');
-Route::post('user/register','FrontendController@registerSubmit')->name('register.submit');
+Route::post('user/register','FrontendController@registerSubmit')->name('register.submit')->middleware('verified');
 // Reset password
 Route::post('password-reset', 'FrontendController@showResetForm')->name('password.reset');
 // Socialite
@@ -42,21 +43,22 @@ Route::get('/product-cat/{slug}','FrontendController@productCat')->name('product
 Route::get('/product-sub-cat/{slug}/{sub_slug}','FrontendController@productSubCat')->name('product-sub-cat');
 Route::get('/product-brand/{slug}','FrontendController@productBrand')->name('product-brand');
 // Cart section
-Route::get('/add-to-cart/{slug}','CartController@addToCart')->name('add-to-cart')->middleware('user');
-Route::get('/add-to-cart-old/{slug}','CartController@addToCartOld')->name('add-to-cart-old')->middleware('user');
-Route::post('/add-to-cart','CartController@singleAddToCart')->name('single-add-to-cart')->middleware('user');
+Route::get('/add-to-cart/{slug}','CartController@addToCart')->name('add-to-cart')->middleware('auth');
+Route::get('/add-to-cart-old/{slug}','CartController@addToCartOld')->name('add-to-cart-old')->middleware(['auth','verified']);
+Route::post('/add-to-cart','CartController@singleAddToCart')->name('single-add-to-cart')->middleware('auth');
 Route::get('cart-delete/{id}','CartController@cartDelete')->name('cart-delete');
 Route::post('cart-update','CartController@cartUpdate')->name('cart.update');
+Route::get('/terms','FrontendController@terms')->name('terms');
 
 Route::get('/cart',function(){
     return view('frontend.pages.cart');
 })->name('cart');
-Route::get('/checkout','CartController@checkout')->name('checkout')->middleware('user');
+Route::get('/checkout','CartController@checkout')->name('checkout')->middleware('auth');
 // Wishlist
 Route::get('/wishlist',function(){
     return view('frontend.pages.wishlist');
 })->name('wishlist');
-Route::get('/wishlist/{slug}','WishlistController@wishlist')->name('add-to-wishlist')->middleware('user');
+Route::get('/wishlist/{slug}','WishlistController@wishlist')->name('add-to-wishlist')->middleware('auth');
 Route::get('wishlist-delete/{id}','WishlistController@wishlistDelete')->name('wishlist-delete');
 Route::post('cart/order','OrderController@store')->name('cart.order');
 Route::get('order/pdf/{id}','OrderController@pdf')->name('order.pdf');
@@ -146,7 +148,7 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
 
 
 // User section start route prefixed by /user
-Route::group(['prefix'=>'/user','middleware'=>['user']],function(){
+Route::group(['prefix'=>'/user','middleware'=>['auth','verified']],function(){
     Route::get('/','HomeController@index')->name('user');
      // user/Profile
      Route::get('/profile','HomeController@profile')->name('user-profile');
@@ -191,3 +193,7 @@ Route::group(['prefix'=>'/user','middleware'=>['user']],function(){
 
 });
 
+
+// Auth::routes();
+
+// Route::get('/home', 'HomeController@index')->name('home');

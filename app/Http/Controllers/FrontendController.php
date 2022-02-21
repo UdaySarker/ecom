@@ -432,4 +432,9 @@ class FrontendController extends Controller
                     ->with('oldBooks',$oldBooks);
     }
 
+    public function terms()
+    {
+        return view('frontend.pages.terms');
+    }
+
 }
