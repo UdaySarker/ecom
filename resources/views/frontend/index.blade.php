@@ -224,7 +224,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="section-title">
-                    <h2>Hot Item</h2>
+                    <h2>Best Selling Item</h2>
                 </div>
             </div>
         </div>
@@ -233,7 +233,7 @@
                 <div class="owl-carousel popular-slider">
                     @if(count($product_lists)<0)
                     @foreach($product_lists as $product)
-                        @if($product->condition=='hot')
+                        @if($product->condition=='best-seller')
                             <!-- Start Single Product -->
                         <div class="single-product">
                             <div class="product-img">
@@ -268,7 +268,10 @@
 
                     @endforeach
                     @else
-                    <h3 class="text-center">No Product Found In This Criteria</h3>
+                    <div class="text-center" style="margin-left:50px">
+                        <h3>No Product Found In This Criteria</h3>
+                    </div>
+
                     @endif
                 </div>
 
