@@ -105,7 +105,7 @@
 
                             @else
                             <p class="text-center p-5">
-                                You need to <a href="{{route('login.form')}}" style="color:rgb(54, 54, 204)">Login</a> OR <a style="color:blue" href="{{route('register.form')}}">Register</a> for comment.
+                                You need to <a href="/login" style="color:rgb(54, 54, 204)">Login</a> OR <a style="color:blue" href="/register">Register</a> for comment.
 
                             </p>
 
@@ -193,7 +193,7 @@
                             <h3 class="title">Newslatter</h3>
                             <div class="letter-inner">
                                 <h4>Subscribe & get news <br> latest updates.</h4>
-                                <form action="{{route('subscribe')}}" method="POST">
+                                <form action="#" method="POST">
                                     @csrf
                                     <div class="form-inner">
                                         <input type="email" name="email" placeholder="Enter your email">

@@ -309,7 +309,7 @@ class OrderController extends Controller
             }
         }
         else{
-            request()->session()->flash('error','Invalid order numer please try again');
+            request()->session()->flash('error','Invalid order number please try again');
             return back();
         }
     }
