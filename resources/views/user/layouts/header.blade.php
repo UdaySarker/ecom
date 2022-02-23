@@ -46,6 +46,9 @@
           <i class="fas fa-home fa-fw"></i>
         </a>
       </li>
+      <li class="nav-item dropdown no-arrow mx-1">
+        @include('user.notification.show');
+       </li>
 
       <div class="topbar-divider d-none d-sm-block"></div>
 

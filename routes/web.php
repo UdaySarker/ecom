@@ -124,6 +124,7 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
 
     // Order
     Route::resource('/order','OrderController');
+    Route::post('/order/{id}/updatepayment','OrderController@updatePayment')->name('order.update.payment');
     // Shipping
     Route::resource('/shipping','ShippingController');
     // Coupon
@@ -163,6 +164,10 @@ Route::group(['prefix'=>'/user','middleware'=>['auth','verified']],function(){
     Route::get('/user-review/edit/{id}','HomeController@productReviewEdit')->name('user.productreview.edit');
     Route::patch('/user-review/update/{id}','HomeController@productReviewUpdate')->name('user.productreview.update');
 
+    // Notification
+    Route::get('/notification/{id}','UserNotificationController@show')->name('user.notification');
+    Route::get('/notifications','UserNotificationController@index')->name('all.notification');
+    Route::delete('/notification/{id}','UserNotificationController@delete')->name('notification.delete');
     // user/Post comment
     Route::get('user-post/comment','HomeController@userComment')->name('user.post-comment.index');
     Route::delete('user-post/comment/delete/{id}','HomeController@userCommentDelete')->name('user.post-comment.delete');

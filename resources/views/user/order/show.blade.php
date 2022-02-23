@@ -125,7 +125,7 @@
                     </tr>
                     <tr>
                         <td>Payment Status</td>
-                        @if($order->payment_status=='unpaid')
+                        @if($order->payment_status=='unpaid' && $order->payment_method !='cod')
                         <td>
                             <span class="badge badge-danger badge-sm">{{$order->payment_status}} </span>
                             <span>

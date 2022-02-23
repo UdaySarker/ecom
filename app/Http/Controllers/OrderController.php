@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Notification;
 use Helper;
 use Illuminate\Support\Str;
 use App\Notifications\StatusNotification;
+use App\Notifications\UserNotification;
 use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
@@ -138,7 +139,7 @@ class OrderController extends Controller
         $order->fill($order_data);
         //return $order_data;
         $status=$order->save();
-        if($order)
+        if($status)
         // dd($order->id);
         $users=User::where('role','admin')->first();
         $details=[
@@ -147,13 +148,8 @@ class OrderController extends Controller
             'fas'=>'fa-file-alt'
         ];
         Notification::send($users, new StatusNotification($details));
-        if(request('payment_method')=='cod'){
-            return redirect()->route('user.order.index');
-        }
-        else{
-            session()->forget('cart');
-            session()->forget('coupon');
-        }
+        session()->forget('cart');
+        session()->forget('coupon');
         Cart::where('user_id', auth()->user()->id)->where('order_id', null)->update(['order_id' => $order->id]);
 
         // dd($users);
@@ -195,6 +191,9 @@ class OrderController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $data=$request->all();
+        // return $data;
+        // exit();
         $order=Order::find($id);
         if($order->payment_status=="unpaid")
         {
@@ -202,10 +201,9 @@ class OrderController extends Controller
             return redirect()->route('order.index');
         }else{
             $this->validate($request,[
-                'status'=>'required|in:new,process,delivered,cancel'
+                'status'=>'required|in:new,processing,delivered,cancel,partial'
             ]);
-            $data=$request->all();
-            // return $request->status;
+
             if($request->status=='delivered'){
                 foreach($order->cart as $cart){
                     $product=$cart->product;
@@ -241,7 +239,53 @@ class OrderController extends Controller
                         DB::table('credit_balance')->insert($credit_balance);
                     }
                 }
+            }elseif($request->status=='partial'){
+                // return $request->delivery_qunt;
+                // exit();
+                $users=User::where('id',$order->user_id)->first();
+                $details=[
+                    'title'=>'Order Notification',
+                    'actionURL'=>route('user.order.show',$order->id),
+                    'fas'=>'fa-file-alt'
+                ];
+                Notification::send($users, new UserNotification($details));
+                foreach($order->cart as $cart){
+                    $product=$cart->product;
+                    $product->stock -=$request->delivery_qunt;
+                    $order->quantity=$request->delivery_qunt;
+                    $product->save();
+                    if($product->condition="old" && $product->slug==$cart->product->slug){
+                        $data_wallet['order_id']=$order->order_number;
+                        $data_wallet['book_owner_id']=$product->user_id;
+                        $data_wallet['dt_amt']=0;
+                        $data_wallet['ct_amt']=$product->price;
+                        $data_wallet['selldate']=$order->created_at;
+
+                       // $data_wallet['credit_balance']=$credit_balance+$product->price;
+                       if(DB::table('user_wallet')->insert($data_wallet)){
+                        $credit_balance['user_id']=$product->user_id;
+                        $credit_balance['credit_amt']= DB::table('user_wallet')->where('book_owner_id','=',$product->user_id)->sum('ct_amt');
+                        DB::table('credit_balance')->insert($credit_balance);
+                       }
+                    }
+                }
+                if($order->payment_method=='credit')
+                {
+                    $data_wallet['order_id']=$order->order_number;
+                    $data_wallet['book_owner_id']=$order->user_id;
+                    $data_wallet['dt_amt']=$order->sub_total;
+                    $data_wallet['ct_amt']=0;
+                    $data_wallet['selldate']=$order->created_at;
+
+                    if(DB::table('user_wallet')->insert($data_wallet))
+                    {
+                        $credit_balance['user_id']=$order->user_id;
+                        $credit_balance['credit_amt']= -$order->sub_total;
+                        DB::table('credit_balance')->insert($credit_balance);
+                    }
+                }
             }
+
             $status=$order->fill($data)->save();
             if($status){
                 request()->session()->flash('success','Successfully updated order');
@@ -348,5 +392,25 @@ class OrderController extends Controller
             $data[$monthName] = (!empty($result[$i]))? number_format((float)($result[$i]), 2, '.', '') : 0.0;
         }
         return $data;
+    }
+
+    //order payment update
+    public function updatePayment(Request $request,$id){
+        $order=Order::find($id);
+        $this->validate($request,[
+            'payment_status'=>'required',
+            'amount'=>'required|numeric'
+        ]);
+        $data['payment_status']=$request->input('payment_status');
+        $data['total_amount']=$request->input('amount');
+        $status=$order->fill($data)->save();
+        if($status){
+            request()->session()->flash('success','Successfully updated order');
+
+        }
+        else{
+            request()->session()->flash('error','Error while updating order');
+        }
+        return redirect()->route('order.index');
     }
 }

@@ -66,10 +66,12 @@
                     <td>
                         @if($order->status=='new')
                           <span class="badge badge-primary">{{$order->status}}</span>
-                        @elseif($order->status=='process')
+                        @elseif($order->status=='processing')
                           <span class="badge badge-warning">{{$order->status}}</span>
                         @elseif($order->status=='delivered')
                           <span class="badge badge-success">{{$order->status}}</span>
+                        @elseif($order->status=='partial')
+                            <span class="badge badge-warning">Partially Delivered</span>
                         @else
                           <span class="badge badge-danger">{{$order->status}}</span>
                         @endif
