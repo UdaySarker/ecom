@@ -4,8 +4,7 @@
 
 @section('main-content')
 <div class="card">
-<h5 class="card-header">Order
-  </h5>
+<h5 class="card-header">Order <a href="{{route('order.pdf',$order->id)}}">PDF</a></h5>
   <div class="card-body">
     @if($order)
     <table class="table table-striped table-hover">
@@ -15,7 +14,7 @@
             <th>Order No.</th>
             <th>Name</th>
             <th>Email</th>
-            <th>Quantity</th>
+            <th>Order Quantity</th>
             <th>Shipping Charge</th>
             <th>Total Amount</th>
             <th>Status</th>
@@ -41,10 +40,13 @@
                   <span class="badge badge-warning">{{$order->status}}</span>
                 @elseif($order->status=='delivered')
                   <span class="badge badge-success">{{$order->status}}</span>
+                @elseif($order->status == 'partial')
+                    <span class="badge badge-secondary">{{$order->status}}</span>
                 @else
                   <span class="badge badge-danger">{{$order->status}}</span>
                 @endif
             </td>
+
             <td>
                 @if($order->payment_status != "paid")
                 <form method="POST" action="{{route('order.destroy',[$order->id])}}">
@@ -97,29 +99,33 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Order Status</td>
+                        <td>Order Delivery Status</td>
                         <td>{{$order->status}}</td>
+                    </tr>
+                    <tr>
+                        <td>Delivery Quantity</td>
+                        <td>{{$order->delivery_qunt}}</td>
                     </tr>
                     <tr>
                       @php
                           $shipping_charge=DB::table('shippings')->where('id',$order->shipping_id)->pluck('price');
                       @endphp
                         <td>Shipping Charge</td>
-                        <td> : $ {{number_format($shipping_charge[0],2)}}</td>
+                        <td> : BDT {{number_format($shipping_charge[0],2)}}</td>
                     </tr>
                     <tr>
                         <td>Total Amount</td>
-                        <td class="amount">{{number_format($order->total_amount,2)}}</td>
+                        <td class="amount">: BDT{{number_format($order->total_amount,2)}}</td>
                     </tr>
                     <tr>
                       <td>Payment Method</td>
                       <td>
                             @if ($order->payment_method == 'ibmb')
-                                <span>Internet/Mobile Banking</span>
+                                <span>: Internet/Mobile Banking</span>
                             @elseif ($order->payment_method=='cod')
-                                <span>Cash On Delivery</span>
+                                <span>: Cash On Delivery</span>
                             @else
-                                <span>Credit Purchase</span>
+                                <span>: Credit Purchase</span>
                           @endif
                       </td>
                     </tr>

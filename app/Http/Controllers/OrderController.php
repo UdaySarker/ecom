@@ -3,20 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Events\MessageSent;
+use App\Mail\OrderShipped;
 use Illuminate\Http\Request;
 use App\Models\Cart;
 use App\Models\Message;
 use App\Models\Order;
 use App\Models\Shipping;
 use App\User;
+use Dompdf\Dompdf;
 use Illuminate\Support\Facades\DB;
-use Barryvdh\DomPDF\PDF;
 use Illuminate\Support\Facades\Notification;
 use Helper;
+// Use Barryvdh\DomPDF\PDF as PDF;
 use Illuminate\Support\Str;
 use App\Notifications\StatusNotification;
 use App\Notifications\UserNotification;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
@@ -239,6 +242,13 @@ class OrderController extends Controller
                         DB::table('credit_balance')->insert($credit_balance);
                     }
                 }
+                $users=User::where('id',$order->user_id)->first();
+                $details=[
+                    'title'=>'Order Notification',
+                    'actionURL'=>route('user.order.show',$order->id),
+                    'fas'=>'fa-file-alt'
+                ];
+                Notification::send($users, new UserNotification($details));
             }elseif($request->status=='partial'){
                 // return $request->delivery_qunt;
                 // exit();
@@ -252,7 +262,7 @@ class OrderController extends Controller
                 foreach($order->cart as $cart){
                     $product=$cart->product;
                     $product->stock -=$request->delivery_qunt;
-                    $order->quantity=$request->delivery_qunt;
+                    $order->delivery_qunt=$request->delivery_qunt;
                     $product->save();
                     if($product->condition="old" && $product->slug==$cart->product->slug){
                         $data_wallet['order_id']=$order->order_number;
@@ -364,7 +374,9 @@ class OrderController extends Controller
         // return $order;
         $file_name=$order->order_number.'-'.$order->first_name.'.pdf';
         // return $file_name;
-        $pdf=PDF::loadview('backend.order.pdf',compact('order'));
+        $pdf = app('dompdf.wrapper');
+        // $pdf=new Dompdf();
+        $pdf=$pdf->loadview('backend.order.pdf',compact('order'));
         return $pdf->download($file_name);
     }
     // Income chart
@@ -404,7 +416,9 @@ class OrderController extends Controller
         $data['payment_status']=$request->input('payment_status');
         $data['total_amount']=$request->input('amount');
         $status=$order->fill($data)->save();
+        $user=User::find($order->user_id);
         if($status){
+            Mail::to($user->email)->send(new OrderShipped($order));
             request()->session()->flash('success','Successfully updated order');
 
         }

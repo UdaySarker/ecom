@@ -3,3 +3,6 @@ Process Flow For Old Book Sale
 # If some one purchase from old book stock need to insert a record to old book table along with price book id
 # Update the record to user wallet table
 #
+{"title":"New order created",
+"actionURL":"http:\/\/localhost:8000\/admin\/order\/36",
+"fas":"fa-file-alt"}

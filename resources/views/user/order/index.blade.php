@@ -63,6 +63,8 @@
                           <span class="badge badge-warning">{{$order->status}}</span>
                         @elseif($order->status=='delivered')
                           <span class="badge badge-success">{{$order->status}}</span>
+                        @elseif($order->status=='partial')
+                            <span class="badge badge-info">{{$order->status}}</span>
                         @else
                           <span class="badge badge-danger">{{$order->status}}</span>
                         @endif
