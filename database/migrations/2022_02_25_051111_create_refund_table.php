@@ -19,7 +19,7 @@ class CreateRefundTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->enum('delivery_status',['delivered','partial','cancel','processing']);
             $table->enum('type',['return','refund']);
-            $table->enmum('payment_method',['bank','bkash','nagad']);
+            $table->enum('payment_method',['bank','bkash','nagad']);
             $table->float('order_amount')->nullable();
             $table->text('reason');
             $table->longText('description');
