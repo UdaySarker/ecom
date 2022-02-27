@@ -16,12 +16,16 @@ class CreateRefundTable extends Migration
         Schema::create('refund', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('order_id');
+            $table->unsignedBigInteger('user_id');
             $table->enum('delivery_status',['delivered','partial','cancel','processing']);
             $table->enum('type',['return','refund']);
-            $table->float('order_amount');
+            $table->enmum('payment_method',['bank','bkash','nagad']);
+            $table->float('order_amount')->nullable();
             $table->text('reason');
             $table->longText('description');
-            $table->enum('admin_status',['approved','rejected']);
+            $table->enum('admin_status',['approved','rejected','processing'])->default('processing');
+            $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

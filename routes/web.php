@@ -196,6 +196,9 @@ Route::group(['prefix'=>'/user','middleware'=>['auth','verified']],function(){
     Route::post('ipn', [SslCommerzPaymentController::class, 'ipn']);
     //SSLCOMMERZ END
 
+    //return refund
+    Route::post('/return/{id}','RefundController@storeRequest')->name('return');
+
 });
 
 

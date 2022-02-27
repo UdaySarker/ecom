@@ -73,8 +73,12 @@
                         <td> : {{$order->created_at->format('D d M, Y')}} at {{$order->created_at->format('g : i a')}} </td>
                     </tr>
                     <tr>
-                        <td>Quantity</td>
+                        <td>Order Quantity</td>
                         <td> : {{$order->quantity}}</td>
+                    </tr>
+                    <tr>
+                        <td>Delivery Quantity</td>
+                        <td>: {{$order->delivery_qunt}}</td>
                     </tr>
                     <tr>
                         <td>Order Status</td>
