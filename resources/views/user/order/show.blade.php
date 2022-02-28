@@ -106,7 +106,7 @@
                         <td>Delivery Quantity</td>
                         <td>{{$order->delivery_qunt}}</td>
                         @if($order->status=='partial')
-                        <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">Request for refund</button></td>
+                        <td><a href="{{route('returnForm',$order->id)}}">Refund/Return</a></td>
                         <!-- Modal -->
                         <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
                             <div class="modal-dialog" role="document">
@@ -118,52 +118,7 @@
                                 </button>
                                 </div>
                                 <div class="modal-body">
-                                    <form action="{{route('return',$order->id)}}" method="POST">
-                                        @csrf
-                                            <input type="hidden" class="form-control" disabled value="{{$order->id}}">
-                                        <div class="row">
-                                            <div class="col">
-                                                <div class="form-group">
-                                                    <label for="">Delivery Status</label>
-                                                    <select name="delivery_status" id="" class="form-control">
-                                                        <option value="">--Please Select Any--</option>
-                                                        <option value="delivered">Delivered</option>
-                                                        <option value="partial">Partial</option>
-                                                        <option value="cancel">Cancel</option>
-                                                        <option value="processing">Processing</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col">
-                                                <div class="form-group">
-                                                    <label for="">Type</label>
-                                                    <select name="type" id="" class="form-control">
-                                                        <option value="">--Please Select Any--</option>
-                                                        <option value="refund">Refund</option>
-                                                        <option value="return">Return</option>
-                                                    </select>
-                                                    @error('type')
-                                                        <span class="text-danger">Please Select type</span>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col">
-                                                <label for="">Refund/Return Reason</label>
-                                                <textarea class="form-control" name="reason" id="" cols="5" rows="2"></textarea>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col">
-                                                <label for="">Tell us detail about it!</label>
-                                                <textarea class="form-control" name="description" id="" cols="5" rows="2"></textarea>
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <input type="submit" class="btn btn-primary">Send</button>
-                                        </div>
-                                    </form>
+
                                 </div>
 
                             </div>

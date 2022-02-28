@@ -17,7 +17,9 @@ use App\Http\Controllers\SslCommerzPaymentController;
 // Auth::routes();
 Auth::routes(['register'=>true]);
 Auth::routes(['verify'=>true]);
-
+Route::get('/php',function(){
+    phpinfo();
+});
 Route::get('user/login','FrontendController@login')->name('login.form');
 Route::post('user/login','FrontendController@loginSubmit')->name('login.submit');
 Route::get('user/logout','FrontendController@logout')->name('user.logout');
@@ -145,6 +147,8 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
     Route::get('/oldbooksale','OldBookSaleController@oldBookSaleAdminIndex')->name('oldbooksale.index');
     Route::get('/oldbooksale/show/{id}','OldBookSaleController@oldBookSaleAdminShow')->name('oldbooksale.show');
     Route::post('/oldbooksale/update/{id}','OldBookSaleController@oldBookSaleAdminUpdateStatus')->name('oldbooksale.updateStatus');
+    //return and refund admin part
+    Route::get('/returnrequest','RefundController@adminIndex')->name('admin.refund.index');
 });
 
 
@@ -166,7 +170,7 @@ Route::group(['prefix'=>'/user','middleware'=>['auth','verified']],function(){
 
     // Notification
     Route::get('/notification/{id}','UserNotificationController@show')->name('user.notification');
-    Route::get('/notifications','UserNotificationController@index')->name('all.notification');
+    Route::get('/notifications','UserNotificationController@index')->name('user.all.notification');
     Route::delete('/notification/{id}','UserNotificationController@delete')->name('notification.delete');
     // user/Post comment
     Route::get('user-post/comment','HomeController@userComment')->name('user.post-comment.index');
@@ -197,7 +201,9 @@ Route::group(['prefix'=>'/user','middleware'=>['auth','verified']],function(){
     //SSLCOMMERZ END
 
     //return refund
+    Route::get('returnForm/{id}','RefundController@index')->name('returnForm');
     Route::post('/return/{id}','RefundController@storeRequest')->name('return');
+    Route::get('returnlist','RefundController@userRefundList')->name('refundList');
 
 });
 

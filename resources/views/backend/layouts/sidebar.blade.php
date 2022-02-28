@@ -147,7 +147,12 @@
             <i class="fab fa-adversal"></i>
             <span>Old Book Sale</span></a>
     </li>
-
+    <li class="nav-item">
+        <a href="{{route('admin.refund.index')}}" class="nav-link">
+            <i class="fas fa-user"></i>
+            <span>Refund/Return Request</span>
+        </a>
+    </li>
 
     <!-- Divider -->
     <hr class="sidebar-divider">
