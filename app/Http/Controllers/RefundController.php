@@ -74,4 +74,11 @@ class RefundController extends Controller
         return view('backend.refund.index')
         ->with('refunds',$refunds);
     }
+    public function adminShow($id)
+    {
+        $refund=Refund::find($id);
+        $order=Order::find($refund->order_id);
+        $cart_info=$order->cart;
+        return view('backend.refund.show',['refund'=>$refund,'order'=>$order,'cart'=>$cart_info]);
+    }
 }

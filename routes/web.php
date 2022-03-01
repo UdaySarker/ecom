@@ -149,6 +149,7 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
     Route::post('/oldbooksale/update/{id}','OldBookSaleController@oldBookSaleAdminUpdateStatus')->name('oldbooksale.updateStatus');
     //return and refund admin part
     Route::get('/returnrequest','RefundController@adminIndex')->name('admin.refund.index');
+    Route::get('/returnrequest/{id}/show','RefundController@adminShow')->name('admin.refund.show');
 });
 
 
