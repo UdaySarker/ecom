@@ -19,6 +19,7 @@
                         <th scope="col">Order Number</th>
                         <th scope="col">From</th>
                         <th scope="col">Status</th>
+                        <th scope="col">User Action</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
@@ -33,6 +34,13 @@
                             <td>{{$order_number[0]}}</td>
                             <td>{{$user[0]}}</td>
                             <td>{{$refund->admin_status}}</td>
+                            <td>
+                                @if($refund->user_action=='true')
+                                <span class="badge badge-success">Received</span>
+                                @else
+                                <span class="badge badge-danger">Not Received Yet</span>
+                                @endif
+                            </td>
                             <td>
                                 <span><a href="{{route('admin.refund.show',$refund->id)}}"><i class="fas fa-eye"></i></a></span>
 

@@ -150,6 +150,7 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
     //return and refund admin part
     Route::get('/returnrequest','RefundController@adminIndex')->name('admin.refund.index');
     Route::get('/returnrequest/{id}/show','RefundController@adminShow')->name('admin.refund.show');
+    Route::post('/returnrequest/{id}/update','RefundController@adminUpdate')->name('admin.refund.update');
 });
 
 
@@ -205,6 +206,7 @@ Route::group(['prefix'=>'/user','middleware'=>['auth','verified']],function(){
     Route::get('returnForm/{id}','RefundController@index')->name('returnForm');
     Route::post('/return/{id}','RefundController@storeRequest')->name('return');
     Route::get('returnlist','RefundController@userRefundList')->name('refundList');
+    Route::patch('/returnack/{id}/update','RefundController@userAck')->name('user.refund.ack');
 
 });
 

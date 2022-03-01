@@ -11,6 +11,7 @@ use App\Notifications\StatusNotification;
 use App\Notifications\UserNotification;
 use Illuminate\Support\Facades\Notification;
 use App\User;
+use Carbon\Carbon;
 
 class RefundController extends Controller
 {
@@ -50,6 +51,7 @@ class RefundController extends Controller
         $price=$order->cart;
         $refund_amount=$diff_product*$price[0]->price;
         $data['refund_amount']=$refund_amount;
+        $data['user_action_time']=NULL;
         try{
             Refund::create($data);
             $users=User::where('role','admin')->first();
@@ -64,7 +66,15 @@ class RefundController extends Controller
             return "Something went wrong";
         }
         return redirect()->route('user.order.index');
-
+    }
+    public function userAck(Request $request, $id){
+        $data['user_action']=true;
+        $data['user_action_time']=Carbon::now();
+        $refund=Refund::find($id);
+        if($refund->update($data))
+        {
+            return redirect()->route('refundList');
+        }
     }
     //admin part
 
@@ -80,5 +90,21 @@ class RefundController extends Controller
         $order=Order::find($refund->order_id);
         $cart_info=$order->cart;
         return view('backend.refund.show',['refund'=>$refund,'order'=>$order,'cart'=>$cart_info]);
+    }
+    public function adminUpdate(Request $request, $id)
+    {
+        $refund=Refund::find($id);
+        $this->validate($request,[
+            'trans_dtls'=>'required'
+        ]);
+        $data['trans_dtls']=$request->input('trans_dtls');
+        $data['admin_status']=$request->input('admin_status');
+        if($refund->update($data))
+        {
+            request()->session()->flash('success',"Successfully updated");
+        }else{
+            request()->session()->flash('error','Something went wrong');
+        }
+        return redirect()->route('admin.refund.index');
     }
 }

@@ -25,6 +25,9 @@ class CreateRefundTable extends Migration
             $table->text('reason');
             $table->longText('description');
             $table->enum('admin_status',['approved','rejected','processing'])->default('processing');
+            $table->enum('user_action',['true','false'])->default('false');
+            $table->text('trans_dtls')->nullable();
+            $table->dateTime('user_action_time')->nullable();
             $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
