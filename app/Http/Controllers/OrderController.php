@@ -6,6 +6,7 @@ use App\Events\MessageSent;
 use App\Mail\OrderShipped;
 use Illuminate\Http\Request;
 use App\Models\Cart;
+use App\Models\DeliverySchedule;
 use App\Models\Message;
 use App\Models\Order;
 use App\Models\Shipping;
@@ -18,6 +19,7 @@ use Helper;
 use Illuminate\Support\Str;
 use App\Notifications\StatusNotification;
 use App\Notifications\UserNotification;
+use DateTime;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
@@ -103,6 +105,7 @@ class OrderController extends Controller
         $order_data['order_number']='ORD-'.strtoupper(Str::random(10));
         $order_data['user_id']=$request->user()->id;
         $order_data['shipping_id']=$request->shipping;
+        $order_data['distribution_deliver']='on-progress';
         $shipping=Shipping::where('id',$order_data['shipping_id'])->pluck('price');
         // return session('coupon')['value'];
         $order_data['sub_total']=Helper::totalCartPrice();
@@ -132,30 +135,35 @@ class OrderController extends Controller
                 return back()->withInput($request['input']);
             }
         }
+        if($request->payment_method=='cod' || $request->payment_method=='credit')
+        {
+            $order_data['status']="processing";
+        }else{
+            $order_data['status']="new";
+        }
 
-        $order_data['status']="new";
         if($request->payment_method=='credit'){
             $order_data['payment_method']='paid';
         }else{
             $order_data['payment_method']=$request->input('payment_method');
         }
         $order->fill($order_data);
-        //return $order_data;
         $status=$order->save();
         if($status)
-        // dd($order->id);
         $users=User::where('role','admin')->first();
         $details=[
             'title'=>'New order created',
             'actionURL'=>route('order.show',$order->id),
             'fas'=>'fa-file-alt'
         ];
+        $data_delivery['order_id']=$order->id;
+        $data_delivery['order_date']=$order->created_at;
+        $data_delivery['delivery_status']=$order->distribution_deliver;
+        DeliverySchedule::create($data_delivery);
         Notification::send($users, new StatusNotification($details));
         session()->forget('cart');
         session()->forget('coupon');
         Cart::where('user_id', auth()->user()->id)->where('order_id', null)->update(['order_id' => $order->id]);
-
-        // dd($users);
         request()->session()->flash('success','Your product successfully placed in order');
         return redirect()->route('home');
     }
@@ -195,8 +203,6 @@ class OrderController extends Controller
     public function update(Request $request, $id)
     {
         $data=$request->all();
-        // return $data;
-        // exit();
         $order=Order::find($id);
         if($order->payment_status=="unpaid")
         {
@@ -339,20 +345,28 @@ class OrderController extends Controller
 
     public function productTrackOrder(Request $request){
         // return $request->all();
+
         $order=Order::where('user_id',auth()->user()->id)->where('order_number',$request->order_number)->first();
+        $delivery_date=DeliverySchedule::select('delivery_date')->where('order_id',$order->id)->value('delivery_date');
+        $order_date=DeliverySchedule::select('order_date')->where('order_id',$order->id)->value('order_date');
+        $order_date=new DateTime($order_date);
+        $delivery_date=new DateTime($delivery_date);
+        $date_diff=date_diff($order_date, $delivery_date);
+        $days=$date_diff->d;
+        $hours=$date_diff->h;
         if($order){
             if($order->status=="new"){
             request()->session()->flash('success','Your order has been placed. please wait.');
             return redirect()->route('home');
 
             }
-            elseif($order->status=="process"){
-                request()->session()->flash('success','Your order is under processing please wait.');
+            elseif($order->status=="processing"){
+                request()->session()->flash('success','Your order is under processing please wait Please expect delivery at'.$days.'days'.$hours.'hours');
                 return redirect()->route('home');
 
             }
-            elseif($order->status=="delivered"){
-                request()->session()->flash('success','Your order is successfully delivered.');
+            elseif($order->distribution_deliver=="true"){
+                request()->session()->flash('success','Your order is out for delivery. Expect your products at'.$days.' days and '.$hours.' hours');
                 return redirect()->route('home');
 
             }

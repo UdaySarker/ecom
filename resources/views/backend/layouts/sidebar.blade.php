@@ -130,10 +130,18 @@
 
     <!--Orders -->
     <li class="nav-item">
-        <a class="nav-link" href="{{route('order.index')}}">
+        <a class="nav-link" href="#" data-toggle="collapse" data-target="#orderCollapse" aria-expanded="true" area-controls="orderCollapse">
             <i class="fas fa-hammer fa-chart-area"></i>
             <span>Orders</span>
         </a>
+        <div id="orderCollapse" class="collapse"aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Order Options</h6>
+                <a href="{{route('order.index')}}" class="collapse-item">Orders</a>
+                <a href="{{route('admin.refund.index')}}" class="collapse-item">Refund/Return Request</a>
+                <a href="{{route('deliveryschedule.index')}}" class="collapse-item">Delivery Schedule</a>
+            </div>
+        </div>
     </li>
 
     <!-- Reviews -->
@@ -147,13 +155,6 @@
             <i class="fab fa-adversal"></i>
             <span>Old Book Sale</span></a>
     </li>
-    <li class="nav-item">
-        <a href="{{route('admin.refund.index')}}" class="nav-link">
-            <i class="fas fa-user"></i>
-            <span>Refund/Return Request</span>
-        </a>
-    </li>
-
     <!-- Divider -->
     <hr class="sidebar-divider">
 

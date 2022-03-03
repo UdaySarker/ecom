@@ -126,6 +126,9 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
 
     // Order
     Route::resource('/order','OrderController');
+    //delivery schedule
+    Route::resource('/deliveryschedule','DeliveryScheduleController');
+    Route::get('/getorderdetail/{id}','DeliveryScheduleController@getOrderDetails');
     Route::post('/order/{id}/updatepayment','OrderController@updatePayment')->name('order.update.payment');
     // Shipping
     Route::resource('/shipping','ShippingController');
