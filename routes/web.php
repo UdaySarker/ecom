@@ -128,8 +128,12 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
     Route::resource('/order','OrderController');
     //delivery schedule
     Route::resource('/deliveryschedule','DeliveryScheduleController');
+    Route::post('/updateDeliveryDate/{id}','DeliveryScheduleController@updateDeliveryDate')->name('updateDeliveryDate');
+    Route::post('/updateDeliveryStatus/{id}','DeliveryScheduleController@updateDeliveryStatus')->name('updateDeliveryStatus');
     Route::get('/getorderdetail/{id}','DeliveryScheduleController@getOrderDetails');
+    Route::get('/salesrevenue',"SalesRevenueController@index")->name('salesrevenue');
     Route::post('/order/{id}/updatepayment','OrderController@updatePayment')->name('order.update.payment');
+    Route::get('/order/pdf','SalesRevenueController@pdf')->name('salespdf');
     // Shipping
     Route::resource('/shipping','ShippingController');
     // Coupon

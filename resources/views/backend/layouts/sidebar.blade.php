@@ -155,6 +155,12 @@
             <i class="fab fa-adversal"></i>
             <span>Old Book Sale</span></a>
     </li>
+    <li class="nav-item">
+        <a href="{{route('salesrevenue')}}" class="nav-link" href="#">
+            <i class="fas fa-balance-scale-right"></i>
+            <span>Sales Revenue</span>
+        </a>
+    </li>
     <!-- Divider -->
     <hr class="sidebar-divider">
 

@@ -31,9 +31,9 @@ class DeliveryScheduleController extends Controller
      */
     public function create()
     {
-        $orders=Order::select('id','order_number','created_at')->where(['status'=>'processing'])->get();
-        return view('backend.deliveryschedule.create')
-                    ->with('orders',$orders);
+        // $orders=Order::select('id','order_number','created_at')->where(['status'=>'processing'])->get();
+        // return view('backend.deliveryschedule.create')
+        //             ->with('orders',$orders);
     }
 
     /**
@@ -83,7 +83,9 @@ class DeliveryScheduleController extends Controller
      */
     public function edit($id)
     {
-        //
+        $order=Order::find($id);
+        return view('backend.deliveryschedule.edit')
+                    ->with('order',$order);
     }
 
     /**
@@ -127,5 +129,29 @@ class DeliveryScheduleController extends Controller
         $data['order_date']= date('d-m-Y', strtotime($order->created_at));
         json_encode($data);
         return response($data);
+    }
+
+    public function updateDeliveryDate(Request $request, $id)
+    {
+        $deliver_schedule=DeliverySchedule::find($id);
+        $deliver_schedule->delivery_date=$request->input('delivery_date');
+        if($deliver_schedule->update()){
+            request()->session()->flash('success',"Delivery Date added successfully");
+        }
+        return redirect()->route('deliveryschedule.index');
+    }
+
+    public function updateDeliveryStatus(Request $request, $id)
+    {
+        $deliver_schedule=DeliverySchedule::find($id);
+        $order=Order::find($deliver_schedule->order_id);
+        $deliver_schedule->delivery_status=$request->input('delivery_status');
+        $order->distribution_deliver=$request->input('delivery_status');
+        if($deliver_schedule->update())
+        {
+            $order->update();
+            request()->session()->flash('success','Product Status Changed');
+        }
+        return redirect()->route('deliveryschedule.index');
     }
 }

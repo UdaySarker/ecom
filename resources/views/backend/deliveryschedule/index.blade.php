@@ -1,6 +1,9 @@
 @extends('backend.layouts.master')
 
 @section('main-content')
+<div class="col-md-12">
+    @include('backend.layouts.notification')
+ </div>
     <div class="row">
         <div class="col">
             <div class="card">
@@ -49,14 +52,21 @@
                             <td>{{$schedule->order->created_at}}</td>
                             <td>{{$schedule->delivery_date}}</td>
                             <td>
-                                @if($schedule->delivery_status=='pending')
-                                    <span class="badge badge-warning">Pending</span>
+                                @if($schedule->delivery_status=='on-progress')
+                                    <span class="badge badge-warning">On Progress</span>
+                                @elseif($schedule->delivery_status=="picked")
+                                    <span class="badge badge-primary">Picked By Rider</span>
                                 @else
                                     <span class="badge badge-success">Delivered</span>
                                 @endif
                             </td>
                             <td>
-                                <a class="btn btn-sm btn-primary rounded"href="{{route('deliveryschedule.show',$schedule->id)}}"><i class="fas fa-eye"></i></a>
+                                <span>
+                                    <a href="{{route('deliveryschedule.show',$schedule->id)}}"><i class="fas fa-eye"></i></a>
+                                </span>
+                                <span>
+                                    <a href="{{route('deliveryschedule.edit',$schedule->order_id)}}"><i class="fas fa-edit"></i></a>
+                                </span>
                             </td>
                         </tr>
                     @endforeach

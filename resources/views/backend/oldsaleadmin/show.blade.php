@@ -52,6 +52,11 @@
                     <td>{{$publisher->title}}</td>
                 </tr>
                 <tr class="table-light">
+                    <td>Uploaded By</td>
+                    <td>:</td>
+                    <td>{{$user->name}}</td>
+                </tr>
+                <tr class="table-light">
                     <td>Thumbnail</td>
                     <td>:</td>
                     <td><img class="img" height="50px" width="50px"src="{{asset('storage/'.$oldBook->photo)}}" alt=""></td>

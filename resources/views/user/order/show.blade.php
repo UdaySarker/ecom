@@ -112,15 +112,13 @@
                             <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLongTitle">Refund/Return Request</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Refund/Return Request</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
                                 </div>
                                 <div class="modal-body">
-
                                 </div>
-
                             </div>
                             </div>
                         </div>
@@ -131,26 +129,30 @@
                           $shipping_charge=DB::table('shippings')->where('id',$order->shipping_id)->pluck('price');
                       @endphp
                         <td>Shipping Charge</td>
-                        <td> : BDT {{number_format($shipping_charge[0],2)}}</td>
+                        <td>:</td>
+                        <td>BDT {{number_format($shipping_charge[0],2)}}</td>
                     </tr>
                     <tr>
                         <td>Total Amount</td>
-                        <td class="amount">: BDT{{number_format($order->total_amount,2)}}</td>
+                        <td>:</td>
+                        <td class="amount"> BDT{{number_format($order->total_amount,2)}}</td>
                     </tr>
                     <tr>
                       <td>Payment Method</td>
-                      <td>
+                      <td>:</td>
+                      <td class="float-left">
                             @if ($order->payment_method == 'ibmb')
-                                <span>: Internet/Mobile Banking</span>
+                                <span>Internet/Mobile Banking</span>
                             @elseif ($order->payment_method=='cod')
-                                <span>: Cash On Delivery</span>
+                                <span>Cash On Delivery</span>
                             @else
-                                <span>: Credit Purchase</span>
+                                <span>Credit Purchase</span>
                           @endif
                       </td>
                     </tr>
                     <tr>
                         <td>Payment Status</td>
+                        <td>:</td>
                         @if($order->payment_status=='unpaid' && $order->payment_method !='cod')
                         <td>
                             <span class="badge badge-danger badge-sm">{{$order->payment_status}} </span>

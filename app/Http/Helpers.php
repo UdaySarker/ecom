@@ -180,6 +180,11 @@ class Helper{
         $credit_amount=$ct_amt-$dt_amt;
         return $credit_amount;
     }
+
+    public static function totalOrderAmount()
+    {
+        return Order::sum('sub_total');
+    }
 }
 
 ?>

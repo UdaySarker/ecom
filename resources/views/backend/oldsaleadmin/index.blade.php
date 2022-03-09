@@ -70,17 +70,6 @@
       </div>
     </div>
 </div>
-<div>
-    <form action="{{route('message.store')}}" method="POST">
-        @csrf
-        <input type="text" name="name" value="myname">
-        <input type="email" name="email" value="uday@uday.com">
-        <input type="text" name="message" value="test message">
-        <input type="text" name="subject" value="test subject">
-        <input type="text" name="phone" value="34343434343">
-        <input type="submit" value="submit">
-    </form>
-</div>
 @endsection
 
 @push('styles')
